@@ -21,7 +21,7 @@
 
             while (flag1 == true) {
                 let u1 = prompt("첫 번째 숫자를 입력해주세요. (0~9)")
-                if (c1 < 0 || c1 > 9)
+                if (u1 < 0 || u1 > 9)
                     alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
                 if (c1 == u1) {
                     alert("쓰뚜롸이이잌~!")
@@ -39,9 +39,9 @@
 
             while (flag2 == true) {
                 let u2 = prompt("두 번째 숫자를 입력해주세요. (0~9)")
-                if (c2 < 0 || c2 > 9)
+                if (u2 < 0 || u2 > 9)
                     alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
-                if (c1 == c2)
+                if (u1 == u2)
                     alert("이미 던진 종류의 공입니다. try again!")
 
                 if (c2 == u2) {
@@ -60,9 +60,9 @@
 
             while (flag3 == true) {
                 let u3 = prompt("세 번째 숫자를 입력해주세요. (0~9)")
-                if (c3 < 0 || c3 > 9)
+                if (u3 < 0 || u3 > 9)
                     alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
-                if (c2 == c3) {
+                if (u2 == u3) {
                     alert("이미 던진 종류의 공입니다. try again!")
                     if (c3 == u3) {
                         alert("쓰뚜롸이이잌~!")
