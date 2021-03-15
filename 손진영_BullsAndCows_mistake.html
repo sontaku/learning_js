@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구</title>
+
+    <!-- <style>
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        #kk {
+            /* width: 1500px;
+            height: 1000px; */
+            display: block;
+            width: 100vw;
+            height: 100vh
+        }
+    </style> -->
+
+    <script>
+        let flag1 = true;
+        let flag2 = true;
+        let flag3 = true;
+        let strike = 0, ball = 0
+
+        
+
+        while (strike < 3) {
+
+            
+
+            // 1구
+            while (flag1) {
+                let u1 = prompt("첫 번째 숫자를 입력해주세요. (0~9)")
+                if (u1 < 0 || u1 > 9)
+                    alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
+                if (c1 == u1) {
+                    alert("쓰뚜롸이이잌~!")
+                    strike++
+                    flag1 = false
+                } else {
+                    alert("ball ~~~ !")
+                    ball++
+                    flag1 = false
+                }
+            }
+
+            // 2구
+            while (flag2) {
+                let u2 = prompt("strike : " + strike + "\nball : " + ball + "\n두 번째 숫자를 입력해주세요. (0~9)")
+                if (u2 < 0 || u2 > 9)
+                    alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
+                // if (u1 == u2)
+                //     alert("이미 던진 종류의 공입니다. try again!")
+
+                if (c2 == u2) {
+                    alert("쓰뚜롸이이잌~!")
+                    strike++
+                    flag2 = false
+                } else {
+                    alert("ball ~~~ !")
+                    ball++
+                    flag2 = false
+                }
+
+            }
+
+            // 3구
+            while (flag3) {
+                let u3 = prompt("strike : " + strike + "\nball : " + ball + "\n두 번째 숫자를 입력해주세요. (0~9)")
+                if (u3 < 0 || u3 > 9)
+                    alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
+                // if (u2 == u3)
+                //     alert("이미 던진 종류의 공입니다. try again!")
+                if (c3 == u3) {
+                    alert("쓰뚜롸이이잌~!")
+                    strike++
+                    flag3 = false
+                } else {
+                    alert("ball ~~~ !")
+                    ball++
+                    flag3 = false
+                }
+            }
+
+            alert("최종 성적 : " + strike + "S " + ball + "B")
+
+            if (strike == 3) {
+                alert("게임 종료")
+                break
+            } else {
+                // 공 123 활성화
+                flag1 = true
+                flag2 = true
+                flag3 = true
+
+                // SB 초기화
+                strike = 0
+                ball = 0
+                alert("다시 시도해주세요.")
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- <iframe src="https://img.extmovie.com/files/attach/images/148/075/828/049/ba5a6533c4598c601ae71c5717d0eced.gif"
+        frameborder="0" id="kk"></iframe> -->
+</body>
+</html>
