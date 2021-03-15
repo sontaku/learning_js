@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구</title>
+    <script>
+
+        let flag1 = true;
+        let flag2 = true;
+        let flag3 = true;
+
+        while (true) {
+            let strike = 0, ball = 0
+
+            let c1 = Math.floor(Math.random())
+            let c2 = Math.floor(Math.random())
+            let c3 = Math.floor(Math.random())
+
+            while (flag1 == true) {
+                let u1 = prompt("첫 번째 숫자를 입력해주세요. (0~9)")
+                if (c1 < 0 || c1 > 9)
+                    alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
+                if (c1 == u1) {
+                    alert("쓰뚜롸이이잌~!")
+                    strike++
+                    flag1 = false
+                } else {
+                    alert("ball ~~~ !")
+                    ball++
+                    flag1 = false
+                }
+            }
+
+
+
+
+            while (flag2 == true) {
+                let u2 = prompt("두 번째 숫자를 입력해주세요. (0~9)")
+                if (c2 < 0 || c2 > 9)
+                    alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
+                if (c1 == c2)
+                    alert("이미 던진 종류의 공입니다. try again!")
+
+                if (c2 == u2) {
+                    alert("쓰뚜롸이이잌~!")
+                    strike++
+                    flag2 = false
+                } else {
+                    alert("ball ~~~ !")
+                    ball++
+                    flag2 = false
+                }
+            }
+
+
+
+
+            while (flag3 == true) {
+                let u3 = prompt("세 번째 숫자를 입력해주세요. (0~9)")
+                if (c3 < 0 || c3 > 9)
+                    alert("야구공이 아닌 다른공을 던진 것 같습니다.. try again..")
+                if (c2 == c3) {
+                    alert("이미 던진 종류의 공입니다. try again!")
+                    if (c3 == u3) {
+                        alert("쓰뚜롸이이잌~!")
+                        strike++
+                        flag3 = false
+                    } else {
+                        alert("ball ~~~ !")
+                        ball++
+                        flag3 = false
+                    }
+                }
+
+
+                if (strike == 3) {
+                    alert("키야아아.... 쓰리 스트라잌,,,, 게임 종료")
+                    break
+                } else {
+                    alert("다시 시도해주세요.")
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>
