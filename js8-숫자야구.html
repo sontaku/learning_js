@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자야구 v0.1</title>
+    <script>
+        // 0~9사이 computer 난수 3개
+        let c1 = 0, c2 = 0, c3 = 0
+        // while(!( (c1 != c2) && (c2 != c3) && (c1 != c3) )){
+        while ((c1 == c2) || (c2 == c3) || (c1 == c3)) {
+            c1 = Math.floor(Math.random() * 10)
+            c2 = Math.floor(Math.random() * 10)
+            c3 = Math.floor(Math.random() * 10)
+        }
+        // alert( `${c1} ${c2} ${c3}` )
+        // 숫자입력, 판정
+        // 게임종료의 끝이 불명확 할 때 무한루프
+
+        while (true) {
+            let user = prompt("0~9사이 숫자 3개를 중복안되게 입력")
+            // 숫자 여부 검사
+            if (!Number(user) || user.length < 3) {
+                alert("숫자만 3개 입력하세요.")
+                continue
+            }
+            let u1 = user[0]
+            let u2 = user[1]
+            let u3 = user[2]
+            if ((u1 == u2) || (u2 == u3) || (u3 == u1)) {
+                alert("중복안되는 숫자만 3개 입력하세요")
+                continue
+            } else if(((u1 > 9) || (u2 > 9) || (u3 > 9)) || ((u1 < 0) || (u2 < 0) || (u3 < 0))) {
+                alert("유효한 숫자를 입력해주세요")
+                continue   
+            }
+
+            // strike, ball 판정
+            let strike = 0, ball = 0
+            if( c1 == u1 ) strike++
+            if((c1==u2) || (c1==u3)) ball++
+
+            if( c2 == u2 ) strike++
+            if((c2==u1) || (c2==u3)) ball++
+
+            if( c3 == u3 ) strike++
+            if((c3==u2) || (c3==u1)) ball++
+
+            console.log( `결과: ${strike}S ${ball}B` )
+            alert( `결과: ${strike}S ${ball}B` )
+            if(strike == 3)
+                break
+            
+        }
+
+    </script>
+</head>
+<body>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forEach</title>
+    <script>
+        let foods = ["탕수육", "짜장", "짬뽕"]
+        for( let i in foods ) {
+            // 인덱스로 넘겨받음
+            console.log("for in " + foods[i])
+        }
+
+        for( let f of foods ) {
+            // 값으로 넘겨받음
+            console.log("for of " + f)
+        }
+
+        function food_fn(value, index, array) {
+            console.log("forEach " + value + " : " + index )
+        }
+        foods.forEach(food_fn)
+
+        function foods_map(value) {
+            return "중화요리 : " + value
+        }
+        // console.log(foods.map(foods_map))
+
+        
+        let foods2 = foods.map(foods_map)
+        console.log("foods2 : " + foods2)
+
+        function foods_filter(value) {
+            return value.length == 2
+        }
+        let foods3 = foods.filter(foods_filter)
+        console.log("foods3 : " + foods3)
+</script>
+</head>
+<body>
+    
+</body>
+</html>

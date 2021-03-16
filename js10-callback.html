@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>콜백 함수</title>
+    <script>
+
+
+        function print(i) {
+            console.log(`${i}번째 함수 호출`);
+            checkCount(i);
+        }
+
+        function callThreeTimes(callback) {
+            for(let i = 0; i < 3; i++)
+            callback(i)
+        }
+
+        function checkCount(callback2) {
+            console.log(callback2)
+        }
+        // function print2(i) {
+        //     console.log(`${i}번째 함수 호출 ㅋㅋ`)
+        // }
+        callThreeTimes(print)
+        // callThreeTimes(print2)
+
+        // 아래와 같은 형태로 사용시 undefined가 넘어간다.
+        // 실행하는 것이 아닌 print 함수의 레퍼런스, 주소 값이 넘어가는 형태이다.
+        // callThreeTimes(print())
+    </script>
+</head>
+<body>
+    
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 연습</title>
+</head>
+<body>
+    <ul>
+        <li>10</li>
+        <li>20</li>
+        <li>30</li>
+    </ul>
+    <script>
+        // <li></li>
+        let li = document.createElement("li")
+        // <li>40</li>
+        li.textContent = "40"
+        let ul = document.querySelector("ul")
+        ul.appendChild(li)
+
+        // 이 방법은 반응형 웹이나 이벤트에서 제한사항이 생길수 있다.
+        // 이벤트를 추가하려면 반드시 돔으로 만들어야 한다.
+        ul.innerHTML += "<li>50</li>"  
+
+        // 위 아래 두 방법 모두 숙지하자.
+    </script>
+</body>
+</html>
