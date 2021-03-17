@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쌀집계산기</title>
+    <style>
+        #top_wrap{
+            background: lightgray;
+            border: 1px solid gray;
+            border-radius: 5px;
+            width: 420px;
+            height: 500px;
+            margin: 0 auto;
+        }
+        #bts {
+            background: lightgray;
+            margin: 0 auto;
+            /* border: 1px solid black; */
+            width: 400px;
+            height: 300px;
+        }
+        #bts > button {
+            border-color: linen;
+            font-size: 20px;
+            width: 95px;
+            height: 60px;
+        }
+
+        .numkey {
+
+            font-weight: bold;
+            background: white;
+        }
+
+        .equal {
+            background: darkturquoise;
+        }
+
+
+        #result {
+            /* border: 1px solid tomato; */
+            height: 130px;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <div id="top_wrap">
+        <div id="result_space">
+            <div id="result"></div>
+        </div>
+        <div id="bts">
+            <button>MC</button>
+            <button>MR</button>
+            <button>M+</button>
+            <button>M-</button>
+
+            <button>%</button>
+            <button>C</button>
+            <button>&lt;&lt;</button>
+            <button>/</button>
+
+            <button class="numkey">7</button>
+            <button class="numkey">8</button>
+            <button class="numkey">9</button>
+            <button>X</button>
+
+            <button class="numkey">4</button>
+            <button class="numkey">5</button>
+            <button class="numkey">6</button>
+            <button>-</button>
+
+            <button class="numkey">1</button>
+            <button class="numkey">2</button>
+            <button class="numkey">3</button>
+            <button>+</button>
+
+            <button class="numkey">+/-</button>
+            <button class="numkey">0</button>
+            <button class="numkey">.</button>
+            <button class="equal">=</button>
+        </div>
+    </div>
+    <script>
+        let bts = document.querySelectorAll("#bts > button")
+        let result = document.querySelector("#result")
+
+        function fn_bt_click(event) {
+            let txt = event.target.textContent
+            result.textContent += txt
+        }
+
+        for(bt of bts) {
+            bt.onclick = fn_bt_click
+        }
+
+        bts.onmouseover = function() {
+            let i = event.target.textContent
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    
+    <title>숫자야구게임 UI</title>
+    <style>
+        @keyframes border_ani{
+            from {
+                border: 5px solid red;
+            }
+            15% {
+                border: 5px groove orange;
+            }
+            30% {
+                border: 5px groove yellow;
+            }
+            45% {
+                border: 5px groove green;
+            }
+            60% {
+                border: 5px groove blue;
+            }
+            80% {
+                border: 5px groove darkblue;
+            }
+            to {
+                border: 5px solid purple;
+            }
+        }
+
+        body {
+            padding-top: 50px;
+            font-family: cursive;
+        }
+
+        #top_wrap {
+            padding: 10px;
+            
+            animation: border_ani 0.7s infinite;
+            border-radius: 10px;
+            width: 500px;
+            margin: 0 auto;
+            box-shadow: 5px 5px 5px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #intro{
+            width: 50px;
+            margin: 0 auto;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        #input_num {
+            /* width: 100%; */
+            height: 25px;
+            margin: 0 auto;
+        }
+
+        #num {
+            height: 100%;
+            border: solid 1px #dadada;
+            padding: 1px 1px 1px 1px;
+        }
+
+        #result {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -.6px;
+            color: #000;
+            margin: 0 auto;
+        }
+
+        #input_num,
+        #result {
+            width: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="intro">
+        <h2>최신 디지탈 게임</h2>
+    </div>
+    <div id="top_wrap">
+        <h1>숫자야구게임 UI</h1>
+
+        <!--메세지 입력창-->
+        <h3 id="msg">　</h3>
+        <div id="input_num">
+            <button id="new_game" class="btn btn-default">새게임</button>
+            <input id="num" type="text" size="20" disabled = "disabled">
+            <button id="check_num" class="btn btn-default" disabled = "disabled">확인</button>
+        </div>
+        <div id="result">
+            <h2>결과</h2>
+        </div>
+    </div>
+    <script>
+        // let check_num = $("#check_num")
+        let check_num = document.querySelector("#check_num")
+        let num = document.querySelector("#num")
+        let msg = document.querySelector("#msg")
+        let result = document.querySelector("#result")
+        let new_game = document.querySelector("#new_game")
+
+        num.onkeyup = function(event){
+            if(event.keyCode==13){ //13=엔터키
+                fn_check_num()
+            }
+        }
+
+
+        new_game.onclick = function(){
+            num.removeAttribute("disabled")
+            check_num.removeAttribute("disabled")
+            new_game.setAttribute("disabled","disabled")
+            make_random()
+        }
+
+        // 난수 생성
+        let c1, c2, c3
+        function make_random(){
+            let num_arr = [0,1,2,3,4,5,6,7,8,9]
+            let pos = Math.floor(
+                        Math.random()*num_arr.length)
+            c1 = num_arr.splice(pos,1)[0]
+            pos = Math.floor(
+                        Math.random()*num_arr.length)
+            c2 = num_arr.splice(pos,1)[0]
+            pos = Math.floor(
+                        Math.random()*num_arr.length)
+            c3 = num_arr.splice(pos,1)[0]
+            console.log(c1,c2,c3)
+        }
+
+        // check_num.addEventListener("click", fn_check)
+        // check_num.onclick = fn_check
+        // check_num.onclick = () => {}
+        check_num.onclick = fn_check_num
+        function fn_check_num(){
+            //입력된 숫자 추출
+            if(num.value.length != 3){
+                msg.textContent = "3자리 숫자를 입력하세요"
+                return
+            }
+            // 판정
+            let strike = 0, ball = 0
+            let u1 = num.value[0]
+            let u2 = num.value[1]
+            let u3 = num.value[2]
+
+            if (u1 == u2 || u1 == u3 || u2 == u3) {
+                msg.textContent = "각 자릿수의 숫자가 같지 않게 3자리 숫자를 입력하세요"
+                return
+            }
+
+            if (c1 == u1) strike++
+            if (c2 == u2) strike++
+            if (c3 == u3) strike++
+
+            if (c1 == u2 || c1 == u3) ball++
+            if (c2 == u3 || c2 == u1) ball++
+            if (c3 == u1 || c3 == u2) ball++
+
+            let res = `${num.value} : ${strike}S ${ball}B`
+            res = `<p>${res}</p>`
+            result.innerHTML += res
+            num.value = ""//이전 입력 숫자 삭제
+            //정답 처리
+            if (strike == 3) {
+                msg.textContent = "게임 종료"
+                result.innerHTML += `<p>3Strike 삼진 아웃!</p>`
+                
+                num.setAttribute("disabled","disabled")
+                check_num.setAttribute("disabled","disabled")
+                new_game.removeAttribute("disabled")
+                // alert("정답!")
+            }
+
+        }
+
+    </script>
+</body>
+
+</html>

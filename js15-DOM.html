@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM</title>
+    
+    <script>
+        // 아래 오류가 발생한다.
+        // Uncaught TypeError: Cannot read property 'textContent' of null
+        // 없는 값이거나 잘못 선택했을때 발생하는 에러다.
+
+        // // 태그검색
+        // let h1 = document.querySelector("h1")
+        // // alert(h1)
+        // console.log(h1.textContent)
+
+        // let h1s = document.querySelectorAll("h1")
+        // console.log(h1s)
+        // for(let i of h1s) {
+        //     console.log(`h1s ${i.textContent}`)
+        // }
+
+        // HTML 태그가 완전히 로딩된 이후에 실행되기 때문에
+        // 오류가 발생하지 않는다.
+        // 예전 버전
+        // window.onload = function() {
+        //     // 태그검색
+        //     let h1 = document.querySelector("h1")
+        //     // alert(h1)
+        //     console.log(h1.textContent)
+            
+        //     let h1s = document.querySelectorAll("h1")
+        //     console.log(h1s)
+        //     for(let i of h1s) {
+        //         console.log(`h1s ${i.textContent}`)
+        //     }
+        // }
+
+        // 최신 버전
+        let fn_load = ()=>{
+            // 태그검색
+            let h1 = document.querySelector("h1")
+            // alert(h1)
+            console.log(h1.textContent)
+            
+            let h1s = document.querySelectorAll("h1")
+            console.log(h1s)
+            for(let i of h1s) {
+                console.log(`h1s ${i.textContent}`)
+            }
+        }
+        window.addEventListener("load", fn_load)
+        
+
+
+    </script>
+</head>
+<body>
+    <h1>안녕, 자바스크립트</h1>    
+    <h1>Hello, JavaScript</h1>   
+    <!-- <script>
+        // 태그검색
+        let h1 = document.querySelector("h1")
+        // alert(h1)
+        console.log(h1.textContent)
+
+        let h1s = document.querySelectorAll("h1")
+        console.log(h1s)
+        for(let i of h1s) {
+            console.log(`h1s ${i.textContent}`)
+        }
+    </script> -->
+</body>
+</html>
