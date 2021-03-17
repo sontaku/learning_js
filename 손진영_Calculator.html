@@ -144,6 +144,8 @@
                 result_box.textContent += txt
                 result.textContent = ""
             }else if(txt == '=') {
+                if(result.textContent == "" && (lastWord == '+' || lastWord == '-' || lastWord == '*' || lastWord == '/'))
+                    result_box.textContent = result_box.textContent.substr(0, result_box.textContent.length - 1)
                 result_box.textContent += result.textContent
                 result.textContent = eval(result_box.textContent)
                 result_box.textContent = ""
