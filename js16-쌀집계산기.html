@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>쌀집계산기</title>
     <style>
-        #top_wrap{
+        #top_wrap {
+
             background: lightgray;
             border: 1px solid gray;
             border-radius: 5px;
@@ -14,21 +16,31 @@
             height: 500px;
             margin: 0 auto;
         }
+
         #bts {
             background: lightgray;
             margin: 0 auto;
-            /* border: 1px solid black; */
             width: 400px;
-            height: 300px;
+            height: 370px;
         }
-        #bts > button {
+
+        #bts>button {
             border-color: linen;
             font-size: 20px;
             width: 95px;
             height: 60px;
         }
+        #bts>button.number:hover {
+            background: darkturquoise;
+        }
+        #bts>button:hover {
+            background: orange;
+        }
+        #equal {
+            background: lightslategray;
+        }
 
-        .numkey {
+        .number {
 
             font-weight: bold;
             background: white;
@@ -38,17 +50,45 @@
             background: darkturquoise;
         }
 
+        #result_space {
+            position: relative;
+            height: 130px;
+            text-align: center;
+        }
+
+        #result_box {
+            position: absolute;
+            float: left;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            bottom: 55px;
+            font-size: 25px;
+            color: gray;
+            width: 360px;
+            list-style: none;
+            height: 30px;
+            text-align: right;
+        }
 
         #result {
-            /* border: 1px solid tomato; */
-            height: 130px;
+            position: absolute;
+            margin: 0 auto;
+            left: 0;
+            right: 0;
+            bottom: 5px;
+            font-size: 45px;
+            width: 360px;
+            height: 50px;
             text-align: right;
         }
     </style>
 </head>
+
 <body>
     <div id="top_wrap">
         <div id="result_space">
+            <div id="result_box"></div>
             <div id="result"></div>
         </div>
         <div id="bts">
@@ -62,41 +102,59 @@
             <button>&lt;&lt;</button>
             <button>/</button>
 
-            <button class="numkey">7</button>
-            <button class="numkey">8</button>
-            <button class="numkey">9</button>
-            <button>X</button>
+            <button class="number">7</button>
+            <button class="number">8</button>
+            <button class="number">9</button>
+            <button>x</button>
 
-            <button class="numkey">4</button>
-            <button class="numkey">5</button>
-            <button class="numkey">6</button>
+            <button class="number">4</button>
+            <button class="number">5</button>
+            <button class="number">6</button>
             <button>-</button>
 
-            <button class="numkey">1</button>
-            <button class="numkey">2</button>
-            <button class="numkey">3</button>
+            <button class="number">1</button>
+            <button class="number">2</button>
+            <button class="number">3</button>
             <button>+</button>
 
-            <button class="numkey">+/-</button>
-            <button class="numkey">0</button>
-            <button class="numkey">.</button>
-            <button class="equal">=</button>
+            <button class="number">+/-</button>
+            <button class="number">0</button>
+            <button class="number">.</button>
+            <button id="equal">=</button>
         </div>
     </div>
     <script>
         let bts = document.querySelectorAll("#bts > button")
         let result = document.querySelector("#result")
+        let result_box = document.querySelector("#result_box")
 
         function fn_bt_click(event) {
             let txt = event.target.textContent
-            result.textContent += txt
+            let lastWord = result_box.textContent.substr(result_box.textContent.length - 1, 1)
+            
+            if (txt == '+' || txt == '-' || txt == 'x' || txt == '/') {
+                if(txt == 'x') 
+                    txt = '*'
+                // 연산자 초기화
+                if(result.textContent == "" && (lastWord == '+' || lastWord == '-' || lastWord == '*' || lastWord == '/'))
+                    result_box.textContent = result_box.textContent.substr(0, result_box.textContent.length - 1)
+                result_box.textContent += result.textContent
+                result_box.textContent += txt
+                result.textContent = ""
+            }else if(txt == '=') {
+                result_box.textContent += result.textContent
+                result.textContent = eval(result_box.textContent)
+                result_box.textContent = ""
+            } else {
+                    result.textContent += txt
+            }
         }
 
-        for(bt of bts) {
+        for (bt of bts) {
             bt.onclick = fn_bt_click
         }
 
-        bts.onmouseover = function() {
+        bts.onmouseover = function () {
             let i = event.target.textContent
         }
     </script>
