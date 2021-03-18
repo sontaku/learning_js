@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title></title>
+  <style>
+    #gameboy{
+      position: relative;
+      width: 1200px;
+      height: 1900px;
+      overflow: hidden;
+      background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Game-Boy-Color-Yellow.jpg/1200px-Game-Boy-Color-Yellow.jpg");
+    }
+    
+    #score_board {
+      position: absolute;
+      color: black;
+      top: 80px;
+      left: 500px;
+      font-size: 20px;
+    }
+
+    #wrap {
+      top: 180px;
+      left: 280px;
+      position: relative;
+      border: rosybrown 5px solid;
+      height: 620px;
+      width: 620px;
+      background-image: url("https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F2239B33556F363B308");
+    }
+    
+
+    h1 {
+      transition: 0.2s;
+      width: 64px;
+      height: 64px;
+      line-height: 64px;
+      margin: 0px;
+    }
+
+    #star>img {
+      width: 64px;
+      height: 64px;
+    }
+
+    #food>img {
+      width: 64px;
+      height: 64px;
+    }
+
+
+    
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 별의 초기 설정
+      const star = document.querySelector('#star')
+      const food = document.querySelector('#food')
+      star.style.position = 'absolute'
+      food.style.position = 'absolute'
+
+      let score_div = document.querySelector("#score")
+
+      // 별의 이동을 출력하는 기능
+      let [x, y] = [7, 7]
+      const block = 20
+      const print = () => {
+        star.style.left = `${x * block}px`
+        star.style.top = `${y * block}px`
+      }
+      print()
+
+      // 별을 이동하는 기능
+      const [left, up, right, down] = [37, 38, 39, 40]
+      let star_dir = right // 별의 이동 방향
+
+      document.body.addEventListener('keydown', (event) => {
+        event.preventDefault();
+        if (Math.abs(event.keyCode - star_dir) != 2)
+          star_dir = event.keyCode
+      })
+      function move_star() {
+        switch (star_dir) {
+          case left:
+            (x == 0) ? stop_star() : x -= 1
+            break
+          case up:
+            (y == 0) ? stop_star() : y -= 1
+            break
+          case right:
+            (x == 28) ? stop_star() : x += 1
+            break
+          case down:
+            (y == 28) ? stop_star() : y += 1
+            break
+        }
+        print()
+        // 먹이 충돌 검사
+
+        if (x == food_x && y == food_y) {
+          score++
+          score_div.textContent = "점수 : " + score
+          make_food()
+        }
+      } // end move_star()
+      let score = 0
+
+
+      // 계속 움직이게 하기
+      let dir = right
+      let move_interval_ms = 50
+      let interval_id = setInterval(move_star, move_interval_ms)
+
+      function stop_star() {
+        clearInterval(interval_id)
+        score_div.textContent += " - 종료 !"
+      }
+
+      // 먹이 추가하기
+      let food_x = 0, food_y = 0
+      function make_food() {
+        food_x = Math.floor(Math.random() * 15)
+        food_y = Math.floor(Math.random() * 15)
+        food.style.left = `${food_x * block}px`
+        food.style.top = `${food_y * block}px`
+      }
+      make_food()
+
+    })
+  </script>
+</head>
+
+<body>
+  <div id="gameboy">
+    <div id="wrap">
+      <!--꼬부기-->
+      <!-- <h1 id="star"><img src="http://pngimg.com/uploads/pokemon/pokemon_PNG116.png" alt=""></h1> -->
+      <!--고라파덕-->
+      <h1 id="star"><img src="http://pngimg.com/uploads/pokemon/small/pokemon_PNG110.png" alt=""></h1>
+    
+      <!-- <h1 id="food"><img src="https://littledeep.com/wp-content/uploads/2020/03/fire_illustration_style1.png" alt=""></h1> -->
+      <!-- <h1 id="food"><img src="https://pbs.twimg.com/media/C3pla4TWAAAfEWW.png" alt=""></h1> -->
+      <h1 id="food"><img src="http://pngimg.com/uploads/pokemon/pokemon_PNG144.png" alt=""></h1>
+    </div>
+    <div id="score_board">
+      <h2 id="score">점수 : 0</h2>
+    </div>
+  </div>
+  
+</body>
+
+</html>
