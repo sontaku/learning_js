@@ -8,9 +8,9 @@
     <title>쌀집계산기</title>
     <style>
         #top_wrap {
-
-            background: lightgray;
-            border: 1px solid gray;
+            /* background-image: url("https://p4.wallpaperbetter.com/wallpaper/245/916/877/floor-blue-minimalistic-dark-pattern-wood-patterns-wood-panels-wood-texture-simplistic-1920x1080-abstract-textures-hd-art-wallpaper-preview.jpg"); */
+            /* background: lightgray; */
+            border: 3px ridge rosybrown;
             border-radius: 5px;
             width: 420px;
             height: 500px;
@@ -18,7 +18,10 @@
         }
 
         #bts {
-            background: lightgray;
+            /* background-image: url("https://p4.wallpaperbetter.com/wallpaper/245/916/877/floor-blue-minimalistic-dark-pattern-wood-patterns-wood-panels-wood-texture-simplistic-1920x1080-abstract-textures-hd-art-wallpaper-preview.jpg"); */
+
+            /* background: lightgray; */
+
             margin: 0 auto;
             width: 400px;
             height: 370px;
@@ -30,12 +33,15 @@
             width: 95px;
             height: 60px;
         }
+
         #bts>button.number:hover {
             background: darkturquoise;
         }
+
         #bts>button:hover {
             background: orange;
         }
+
         #equal {
             background: lightslategray;
         }
@@ -70,6 +76,7 @@
             overflow: hidden;
             height: 30px;
             text-align: right;
+            z-index: 1;
         }
 
         #result {
@@ -83,6 +90,7 @@
             height: 50px;
             text-align: right;
             overflow: hidden;
+            z-index: 1;
         }
     </style>
 </head>
@@ -102,7 +110,7 @@
             <button>%</button>
             <button>C</button>
             <button>&lt;&lt;</button>
-            <button>/</button>
+            <button>÷</button>
 
             <button class="number">7</button>
             <button class="number">8</button>
@@ -128,40 +136,82 @@
     <script>
         let bts = document.querySelectorAll("#bts > button")
         let result = document.querySelector("#result")
-        let result_box = document.querySelector("#result_box")
+        // 덮어쓰기 여부, true = 덮어쓰기, false = 추가하기
+        let overwrite = true
+        let _tmp = 0
+        let _opr = ""
 
         function fn_bt_click(event) {
             let txt = event.target.textContent
-            let lastWord = result_box.textContent.substr(result_box.textContent.length - 1, 1)
-            
-            if (txt == '+' || txt == '-' || txt == 'x' || txt == '/') {
-                if(txt == 'x') 
-                    txt = '*'
-                // 연산자 초기화
-                if(result.textContent == "" && (lastWord == '+' || lastWord == '-' || lastWord == '*' || lastWord == '/'))
-                    result_box.textContent = result_box.textContent.substr(0, result_box.textContent.length - 1)
-                result_box.textContent += result.textContent
-                result_box.textContent += txt
-                result.textContent = ""
-            }else if(txt == '=') {
-                result_box.textContent += result.textContent
-                result.textContent = eval(result_box.textContent)
-                result_box.textContent = ""
-            }else if(txt == 'C') {
-                result_box.textContent = ""
-                result.textContent = ""
+            // 숫자인지 확인, 분기
+            if (Number.isInteger(txt - 0) || txt == ".")
+                process_number(txt)
+            else
+                process_char(txt)
+        }
+        function process_number(txt) {
+            if (overwrite) {
+                // 상단 덮어쓰기(숫자이외 누른 다음)
+                result.textContent = txt
+                overwrite = false
             } else {
-                    result.textContent += txt
+                // 상단 추가하기(숫자를 누른 다음)
+                result.textContent += txt
             }
         }
+        // txt는 방금 누른 버튼 글자
+        function process_char(txt) {
+            // 숫자 이외 버튼
+            overwrite = true
+            let opr = "=+-x÷%C"
 
+            if( txt == "C") {
+                result.textContent = 0
+                _tmp = 0
+                _opr = ""
+                return
+            }
+
+            // if (txt == "+" || txt == "-" || txt == "x" || txt == "÷" || txt == "=") {
+            if( opr.indexOf(txt) >= 0) {
+                process_opr(txt)
+                return
+            } 
+            if(txt[0] == "M") {
+                process_memory(txt)
+                return
+            }
+        }
+        
+        function process_opr(txt) {
+            let n = Number(result.textContent)
+            // 이전 연산자
+            result.textContent = 
+                (_opr == "+") ? (_tmp + n) : 
+                (_opr == "-") ? (_tmp - n) : 
+                (_opr == "x") ? (_tmp * n) : 
+                (_opr == "÷") ? (_tmp / n) : 
+                (_opr == "%") ? (_tmp % n) : result.textContent
+            _tmp = Number(result.textContent)
+            _opr = txt // 연산자 저장
+        }
+        let mplus = 0, mminus = 0
+        function process_memory(txt) {
+            if(txt == "M+") {
+                mplus += Number(result.textContent)
+            } else if (txt == "M-") {
+                mminus += Number(result.textContent)
+            } else if (txt == "MR") {
+                result.textContent = mplus - mminus
+            } else if(txt == "MC") {
+                mplus = 0
+                mminus = 0
+            }
+        }
         for (bt of bts) {
             bt.onclick = fn_bt_click
         }
-
-        bts.onmouseover = function () {
-            let i = event.target.textContent
-        }
     </script>
 </body>
+
 </html>
