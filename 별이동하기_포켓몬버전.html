@@ -76,7 +76,9 @@
       let star_dir = right // 별의 이동 방향
 
       document.body.addEventListener('keydown', (event) => {
+        // 스크롤 이동 방지
         event.preventDefault();
+        // 뒤로가기 제한
         if (Math.abs(event.keyCode - star_dir) != 2)
           star_dir = event.keyCode
       })
