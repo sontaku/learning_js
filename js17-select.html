@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select 태그 이벤트 연습</title>
+</head>
+<body>
+    <h3>좋아하는 음식을 고르세요</h3>
+    <select name="" id="food">
+        <option value="k">김밥</option>
+        <option value="d">떡볶이</option>
+        <option value="s">순대</option>
+    </select>
+    <div id="msg"></div>
+    <script>
+        let food = document.querySelector("#food")
+        let msg = document.querySelector("#msg")
+        food.onchange = (event) => {
+            let idx = event.target.options.selectedIndex
+            let value = event.target.options[idx].value
+            let text = event.target.options[idx].textContent
+            msg.textContent = `${idx} ${value} ${text}`
+            // value == "d" ? msg.innerHTML("떡볶이") : "순대"
+        }
+    </script>
+</body>
+</html>

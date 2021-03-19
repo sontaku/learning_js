@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시니어 네이버 타자 연습</title>
+    <style>
+        #logo {
+            width: 200px;
+        }
+        #wrap {
+            background: snow;
+            width: 700px;
+            height: 500px;
+            margin: 0 auto;
+            border: #19ce60 5px solid;
+        }
+
+        #word { 
+            width: 200px;
+            height: 52px;
+            border: 2px solid #19ce60;
+            border-radius: 2px
+        }
+
+        #words {
+            width: 690px;
+            height: 400px;
+            border: 5px groove #19ce60;
+            position: relative;
+            overflow: hidden;
+            
+        }
+
+        @keyframes hide_word {
+            from {
+                color: black ;
+            }
+            /* 15% {
+                color: black
+            } */
+            30% {
+                color: dimgrey;
+            }
+            /* 45% {
+                color: dimgrey;
+            } */
+            60% {
+                color: gray;
+            }
+            80%{
+                color: lightgray;
+            }
+            90%{
+                color: snow;
+            }
+            /* 95%{
+                color: snow;
+            } */
+            to {
+                color: snow;
+            }
+        }
+
+        #words > h3 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            margin: 0;
+            animation: hide_word 12s infinite;
+            transition: 1s;
+        }
+
+        #input { 
+            display: flex;
+        }
+
+        #input > div {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!--동창회, 향우회, 가족모임, 송별회, 망년회, 기도회, 친목회, 반상회, 신입생환영회, MT, 오
+리엔테이션, 예배, 교회, 절, 학생회, 동아리, 스터디 그룹, 학회, 설명회, 심포지움, 세미나, 워크숍, 친구, 학교
+친구, 고향 친구, 동창, 선배, 후배, 가족, 친척, 이웃, 동료, 회원-->
+        <!-- <img src="https://mblogthumb-phinf.pstatic.net/20160622_73/hhtthh82_1466581509899OrBaG_PNG/%B3%D7%C0%CC%B9%F6-%B7%CE%B0%ED-%B0%ED%C8%AD%C1%FA.png?type=w800" alt="" id="logo"> -->
+        <h1>시니어 네이버 타자 연습</h1>
+        <div id="wrap">
+            <div id="words"></div>
+            <div id="input">
+                <div id="score">점수 : 0</div>
+                <input type="text" name="" id="word">
+                <div id="fail">놓친 단어 : 0</div>
+            </div>
+        </div>
+        <script>
+            let words = document.querySelector("#words")
+            let word = document.querySelector("#word")
+            let score_cnt = 0
+            let loss_cnt = 0;
+
+            // let txt = "동창회, 향우회, 가족모임, 송별회, 망년회, 기도회, 친목회, 반상회, 신입생환영회, 오리엔테이션, 예배, 교회, 절, 학생회, 동아리, 스터디그룹, 학회, 설명회, 심포지움, 세미나, 워크숍, 친구, 학교친구, 고향친구, 동창, 선배, 후배, 가족, 친척, 이웃, 동료, 회원"
+            let txt = "Java, Python, ReactNative, Nodejs, Apollo, R, TypeScript, Spring, Oracle, MySQL, JavaScript, MsSQL, CSS, PHP, Ruby, MongoDB, JSON, AWS, MariaDB, Apache, CDN, Go, Rust, HTML, Git, REST, Elasticsearch, Redux, Bootstrap, StackOverflow, React, Vue, Angular, jQuery, Dart, GCP"
+
+            // let txt_list = txt.split(", ")
+            let txt_list = txt.split(",").map( (val) =>  val.trim()  )
+
+            function add_word() {
+                let h3 = document.createElement("h3")
+                h3.textContent = txt_list.splice(0, 1)
+                let left = Math.floor(Math.random()*30) * 20
+                h3.style.left = `${left}px`
+                h3.style.top = `0px`
+                words.appendChild(h3)
+            }
+
+            // 입력글자 찾아 삭제
+            word.onkeydown = (event) => {
+                if(event.keyCode != 13) return
+                let h3s = document.querySelectorAll("#words > h3")
+                for( let h3 of h3s ) {
+                    if(word.value == h3.textContent) {
+                        words.removeChild(h3)
+                        score_cnt++
+                        score.textContent = `점수 : ${score_cnt}`
+                    }
+                }
+                word.value = "" // 입력글자삭제
+            }
+
+            let move_interval_ms = 600 // ms
+            let move_block = 20 // px
+            function move_words() {
+                if(txt_list.length > 0 && loss_cnt < 10) 
+                    add_word() // 단어추가
+                let h3s = document.querySelectorAll("#words > h3")
+                // 추가할 단어없고 지울 단어도 없으면 종료
+                if(txt_list.length==0 && h3s.length==0) {
+                    clearInterval(interval_id)
+                    return
+                }
+
+                words_top = 400
+                for( let h3 of h3s ) {
+                    let top = parseInt(h3.style.top) // 0px
+                    top += move_block
+                    h3.style.top = top +"px"
+                    if(top > words_top) {
+                        words.removeChild(h3)
+                        loss_cnt++
+                        fail.textContent = `놓친 단어 : ${loss_cnt}`
+                        if(loss_cnt >= 10){
+                            // alert("실패!")
+                            location.reload()
+                        }
+                    }
+                }
+            }
+            let interval_id = setInterval(move_words, move_interval_ms)
+
+        </script>
+</body>
+</html>
