@@ -37,15 +37,9 @@
             from {
                 color: black ;
             }
-            /* 15% {
-                color: black
-            } */
             30% {
                 color: dimgrey;
             }
-            /* 45% {
-                color: dimgrey;
-            } */
             60% {
                 color: gray;
             }
@@ -55,9 +49,6 @@
             90%{
                 color: snow;
             }
-            /* 95%{
-                color: snow;
-            } */
             to {
                 color: snow;
             }
@@ -138,6 +129,7 @@
                 let h3s = document.querySelectorAll("#words > h3")
                 // 추가할 단어없고 지울 단어도 없으면 종료
                 if(txt_list.length==0 && h3s.length==0) {
+                    fail.textContent = `게임 종료`
                     clearInterval(interval_id)
                     return
                 }
@@ -152,8 +144,10 @@
                         loss_cnt++
                         fail.textContent = `놓친 단어 : ${loss_cnt}`
                         if(loss_cnt >= 10){
-                            // alert("실패!")
                             location.reload()
+                            alert("게임 종료")
+                            loss_cnt = 0
+                            // clearInterval(interval_id)
                         }
                     }
                 }
