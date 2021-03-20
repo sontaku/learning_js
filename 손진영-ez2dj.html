@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ez2dj</title>
+    <style>
+        #logo {
+            width: 200px;
+        }
+
+        #wrap {
+            background: snow;
+            width: 570px;
+            height: 700px;
+            margin: 0 auto;
+            border: #19ce60 5px solid;
+        }
+
+        h1 {
+            width: 380px;
+            margin: 0 auto;
+        }
+
+        #score {
+            width: 150px;
+            text-align: center;
+        }
+
+        #fail {
+            width: 150px;
+            text-align: center;
+        }
+
+        #word {
+            width: 80px;
+            height: 52px;
+            border: 2px solid #19ce60;
+            border-radius: 2px
+        }
+
+        #words {
+            width: 560px;
+            height: 600px;
+            border: 5px groove #19ce60;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        #words>div {
+            width: 80px;
+            height: 600px;
+            position: absolute;
+            float: left;
+            margin: 0;
+            animation: hide_word 12s infinite;
+            transition: 1s;
+        }
+
+        /* #lane1 {} */
+
+        #lane2 {
+            left: 80px;
+        }
+
+        #lane3 {
+            left: 160px;
+        }
+
+        #lane4 {
+            left: 240px;
+        }
+
+        #lane5 {
+            left: 320px;
+        }
+
+        #lane6 {
+            left: 400px;
+        }
+
+        #lane7 {
+            left: 480px;
+            float: right;
+        }
+
+        #words>table {
+            border: 5px groove black;
+            background: brown;
+            width: 80px;
+            height: 20px;
+
+
+            position: absolute;
+            left: 0;
+            top: 0;
+            margin: 0;
+            animation: hide_word 12s infinite;
+            /* transition: 1s; */
+        }
+
+        @keyframes hide_word {
+            from {
+                color: black;
+            }
+
+            30% {
+                color: dimgrey;
+            }
+
+            60% {
+                color: gray;
+            }
+
+            80% {
+                color: lightgray;
+            }
+
+            90% {
+                color: snow;
+            }
+
+            to {
+                color: snow;
+            }
+        }
+
+        /* #words>h3 {
+            position: absolute;
+            width: 80px;
+            left: 0;
+            top: 0;
+            margin: 0;
+            animation: hide_word 12s infinite;
+            transition: 1s;
+        } */
+
+        #input {
+            height: 90px;
+            display: flex;
+        }
+
+        #input>div {
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <img src="https://mblogthumb-phinf.pstatic.net/20160622_73/hhtthh82_1466581509899OrBaG_PNG/%B3%D7%C0%CC%B9%F6-%B7%CE%B0%ED-%B0%ED%C8%AD%C1%FA.png?type=w800" alt="" id="logo"> -->
+    <h1>What you need to learn</h1>
+    <div id="wrap">
+        <div id="words">
+            <div id="lane1"></div>
+            <div id="lane2"></div>
+            <div id="lane3"></div>
+            <div id="lane4"></div>
+            <div id="lane5"></div>
+            <div id="lane6"></div>
+            <div id="lane7"></div>
+        </div>
+        <div id="input">
+            <div id="s"></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div id="score">Score : 0</div>
+        <input type="text" name="" id="word">
+        <div id="fail">Missing Words : 0</div>
+    </div>
+    <script>
+        let words = document.querySelector("#words")
+        let word = document.querySelector("#word")
+        let score_cnt = 0
+        let loss_cnt = 0;
+
+        // let txt = "동창회, 향우회, 가족모임, 송별회, 망년회, 기도회, 친목회, 반상회, 신입생환영회, 오리엔테이션, 예배, 교회, 절, 학생회, 동아리, 스터디그룹, 학회, 설명회, 심포지움, 세미나, 워크숍, 친구, 학교친구, 고향친구, 동창, 선배, 후배, 가족, 친척, 이웃, 동료, 회원"
+        let txt = "Java, Python, ReactNative, Nodejs, Apollo, R, TypeScript, Spring, Oracle, MySQL, JavaScript, MsSQL, CSS, PHP, Ruby, MongoDB, JSON, AWS, MariaDB, Apache, CDN, Go, Rust, HTML, Git, REST, Elasticsearch, Redux, Bootstrap, StackOverflow, React, Vue, Angular, jQuery, Dart, GCP"
+
+        // let txt_list = txt.split(", ")
+        // let txt_list = txt.split(",").map((val) => val.trim())
+
+        function add_word() {
+            let table = document.createElement("table")
+            // h3.textContent = txt_list.splice(0, 1)
+            // let left = Math.floor(Math.random() * 30) * 20
+            let left = 0
+
+            function lanechoice() {
+                let leftlist = [0, 80, 160, 240, 320, 400, 480]
+                let choice_cnum = Math.ceil(Math.random() * 7) - 1
+                left = leftlist[choice_cnum]
+            }
+            lanechoice()
+            table.style.left = `${left}px`
+            table.style.top = `0px`
+            words.appendChild(table)
+        }
+
+
+
+
+        // 입력글자 찾아 삭제
+        word.onkeydown = (event) => {
+            if (event.keyCode != 13) return
+            let notes = document.querySelectorAll("#words > table")
+            for (let table of tables) {
+                if (word.value == table.textContent) {
+                    words.removeChild(table)
+                    score_cnt++
+                    score.textContent = `Score : ${score_cnt}`
+                }
+            }
+            word.value = "" // 입력글자삭제
+        }
+
+        let move_interval_ms = 2000 // ms
+        let move_block = 20 // px
+
+
+
+
+        function move_words() {
+            // if (txt_list.length > 0 && loss_cnt < 10)
+            add_word() // 단어추가
+            let tables = document.querySelectorAll("#words > table")
+            // 추가할 단어없고 지울 단어도 없으면 종료
+            // if (txt_list.length == 0 && h3s.length == 0) {
+            //     fail.textContent = `게임 종료`
+            //     clearInterval(interval_id)
+            //     return
+            // }
+
+            words_top = 580
+            for (let table of tables) {
+                let top = parseInt(table.style.top) // 0px
+                top += move_block
+                table.style.top = top + "px"
+                if (top > words_top) {
+                    words.removeChild(table)
+                    loss_cnt++
+                    fail.textContent = `Missing Words : ${loss_cnt}`
+                    // if (loss_cnt >= 200) {
+                    //     clearInterval(interval_id)
+                    //     alert("Fail ! try again")
+                    //     location.reload()
+                    //     loss_cnt = 0
+                    // }
+                }
+            }
+        }
+
+
+        let interval_id = setInterval(move_words, move_interval_ms)
+
+    </script>
+    <iframe id="music" width="100" height="100" hidden src="https://www.youtube.com/embed/wq9zM5je8pg?autoplay=1&loop=1&enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media;" allowfullscreen></iframe>
+</body>
+
+</html>

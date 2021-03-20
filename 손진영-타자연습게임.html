@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>시니어 네이버 타자 연습</title>
+    <title>Whatyouneedtolearn</title>
     <style>
         #logo {
             width: 200px;
@@ -15,6 +15,20 @@
             height: 500px;
             margin: 0 auto;
             border: #19ce60 5px solid;
+        }
+
+        h1 {
+            width: 380px;
+            margin: 0 auto;
+        }
+
+        #score {
+            width: 150px;
+            text-align: center;
+        }
+        #fail {
+            width: 150px;
+            text-align: center;
         }
 
         #word { 
@@ -64,11 +78,12 @@
         }
 
         #input { 
+            height: 90px;
             display: flex;
         }
 
         #input > div {
-            width: 200px;
+            margin: 0 auto;
         }
     </style>
 </head>
@@ -77,13 +92,13 @@
 리엔테이션, 예배, 교회, 절, 학생회, 동아리, 스터디 그룹, 학회, 설명회, 심포지움, 세미나, 워크숍, 친구, 학교
 친구, 고향 친구, 동창, 선배, 후배, 가족, 친척, 이웃, 동료, 회원-->
         <!-- <img src="https://mblogthumb-phinf.pstatic.net/20160622_73/hhtthh82_1466581509899OrBaG_PNG/%B3%D7%C0%CC%B9%F6-%B7%CE%B0%ED-%B0%ED%C8%AD%C1%FA.png?type=w800" alt="" id="logo"> -->
-        <h1>시니어 네이버 타자 연습</h1>
+        <h1>What you need to learn</h1>
         <div id="wrap">
             <div id="words"></div>
             <div id="input">
-                <div id="score">점수 : 0</div>
+                <div id="score">Score : 0</div>
                 <input type="text" name="" id="word">
-                <div id="fail">놓친 단어 : 0</div>
+                <div id="fail">Missing Words : 0</div>
             </div>
         </div>
         <script>
@@ -115,7 +130,7 @@
                     if(word.value == h3.textContent) {
                         words.removeChild(h3)
                         score_cnt++
-                        score.textContent = `점수 : ${score_cnt}`
+                        score.textContent = `Score : ${score_cnt}`
                     }
                 }
                 word.value = "" // 입력글자삭제
@@ -134,7 +149,7 @@
                     return
                 }
 
-                words_top = 400
+                words_top = 390
                 for( let h3 of h3s ) {
                     let top = parseInt(h3.style.top) // 0px
                     top += move_block
@@ -142,12 +157,12 @@
                     if(top > words_top) {
                         words.removeChild(h3)
                         loss_cnt++
-                        fail.textContent = `놓친 단어 : ${loss_cnt}`
+                        fail.textContent = `Missing Words : ${loss_cnt}`
                         if(loss_cnt >= 10){
+                            clearInterval(interval_id)
+                            alert("Fail ! try again")
                             location.reload()
-                            alert("게임 종료")
                             loss_cnt = 0
-                            // clearInterval(interval_id)
                         }
                     }
                 }
