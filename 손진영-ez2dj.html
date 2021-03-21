@@ -7,8 +7,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ez2dj</title>
     <style>
-        #logo {
-            width: 200px;
+        * {
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        #bgimg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
         }
 
         #wrap {
@@ -20,37 +27,54 @@
         }
 
         h1 {
+            z-index: 2;
+            color: white;
+            /* z-index: 1; */
             width: 380px;
             margin: 0 auto;
         }
 
         #score {
-            width: 150px;
+            color: oldlace;
+            font-weight: bold;
+            width: 280px;
             text-align: center;
+            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #fail {
-            width: 150px;
+            color: oldlace;
+            font-weight: bold;
+            width: 280px;
             text-align: center;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         #word {
             width: 80px;
             height: 52px;
-            border: 2px solid #19ce60;
+            border: 2px groove slategray;
             border-radius: 2px
         }
 
         #words {
+            background: url("https://upload.wikimedia.org/wikipedia/commons/2/2f/Hubble_ultra_deep_field.jpg");
+            /* background-color: black; */
             width: 560px;
             height: 600px;
-            border: 5px groove #19ce60;
+            border: 5px groove slategray;
             position: relative;
             overflow: hidden;
 
         }
 
-        #words>div {
+        #lane1, #lane2, #lane3, #lane4, #lane5, #lane6, #lane7 {
             width: 80px;
             height: 600px;
             position: absolute;
@@ -87,9 +111,18 @@
             float: right;
         }
 
+        #target_line{
+            position: absolute;
+            width: 570px;
+            top: 530px;
+            height: 30px;
+            background: linear-gradient(rgba(0, 0, 0, 0), lightgray, rgba(0, 0, 0, 0));
+        }
+
         #words>table {
-            border: 5px groove black;
-            background: brown;
+            border: 5px groove mediumaquamarine;
+            background: navajowhite;
+            /* background: linear-gradient(rgba(0, 0, 255, 0.3), blue); */
             width: 80px;
             height: 20px;
 
@@ -99,8 +132,11 @@
             top: 0;
             margin: 0;
             animation: hide_word 12s infinite;
-            /* transition: 1s; */
+            transition: 1s;
         }
+
+
+
 
         @keyframes hide_word {
             from {
@@ -139,18 +175,39 @@
         } */
 
         #input {
+            background: url("https://post-phinf.pstatic.net/MjAxODA0MzBfMTMx/MDAxNTI1MDY5Mjk4Mjg2.51OWZ6gUjfTDoQ5lYE7StRChvsJRIyK0tQGw2N10EUUg.ozmnTHMNF4zGMg4I7sPwh8AsZ6bkWFgy7B0MsEJATEsg.JPEG/1_2.jpg?type=w1200");
+            position: relative;
             height: 90px;
             display: flex;
         }
 
-        #input>div {
+        #input>.note {
+            border: 3px lightslategrey groove;
+            background-color: burlywood;
+            /* background: url("https://cdn.pixabay.com/photo/2014/11/28/20/02/brick-549172_960_720.jpg"); */
+            position: relative;
             margin: 0 auto;
+            width: 80px;
+            text-align: center;
+            height: 45px;
+            float: left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #input>div {
+            position: absolute;
+            bottom: 0;
+            margin: 0 auto;
+            height: 45px;
+            float: left;
         }
     </style>
 </head>
 
 <body>
-    <!-- <img src="https://mblogthumb-phinf.pstatic.net/20160622_73/hhtthh82_1466581509899OrBaG_PNG/%B3%D7%C0%CC%B9%F6-%B7%CE%B0%ED-%B0%ED%C8%AD%C1%FA.png?type=w800" alt="" id="logo"> -->
+    <img src="https://img2.quasarzone.com/editor/2020/06/24/2a18564000e81fa330caaeef94608eb5.jpg" alt="" id="bgimg">
     <h1>What you need to learn</h1>
     <div id="wrap">
         <div id="words">
@@ -161,19 +218,20 @@
             <div id="lane5"></div>
             <div id="lane6"></div>
             <div id="lane7"></div>
+            <div id="target_line"></div>
         </div>
         <div id="input">
-            <div id="s"></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+            <!-- <input type="text" name="" id="word" hidden> -->
+            <div id="s" class="note">S</div>
+            <div id="d" class="note">D</div>
+            <div id="f" class="note">F</div>
+            <div id="space" class="note" style="background: black;">Space Bar</div>
+            <div id="j" class="note">J</div>
+            <div id="k" class="note">K</div>
+            <div id="l" class="note">L</div>
+            <div id="score">Score : 0</div>
+            <div id="fail">Missing Notes : 0</div>
         </div>
-        <div id="score">Score : 0</div>
-        <input type="text" name="" id="word">
-        <div id="fail">Missing Words : 0</div>
     </div>
     <script>
         let words = document.querySelector("#words")
@@ -194,7 +252,8 @@
             let left = 0
 
             function lanechoice() {
-                let leftlist = [0, 80, 160, 240, 320, 400, 480]
+                // let leftlist = [0, 80, 160, 240, 320, 400, 480]
+                let leftlist = [0, 80, 160, 320, 400, 480]
                 let choice_cnum = Math.ceil(Math.random() * 7) - 1
                 left = leftlist[choice_cnum]
             }
@@ -208,23 +267,101 @@
 
 
         // 입력글자 찾아 삭제
-        word.onkeydown = (event) => {
-            if (event.keyCode != 13) return
-            let notes = document.querySelectorAll("#words > table")
-            for (let table of tables) {
-                if (word.value == table.textContent) {
-                    words.removeChild(table)
-                    score_cnt++
-                    score.textContent = `Score : ${score_cnt}`
+        // word.onkeydown = (event) => {
+        //     if (event.keyCode != 13) return
+        //     let notes = document.querySelectorAll("#words > table")
+        //     for (let table of tables) {
+        //         if (word.value == table.textContent) {
+        //             words.removeChild(table)
+        //             score_cnt++
+        //             score.textContent = `Score : ${score_cnt}`
+        //         }
+        //     }
+        //     word.value = "" // 입력글자삭제
+        // }
+
+        // note.onkeydown = (event) => {
+        // s
+        // if(event.keyCode == 83) {
+        //     let notes = document.querySelectorAll("#words > table")
+        //     for (let noteval of notes) {
+        //         if (note.top == noteval.top) {
+        //         words.removeChild(table)
+        //         score_cnt++
+        //         score.textContent = `Score : ${score_cnt}`
+        //         }
+        //     }
+        //     // s.style.background = "black"
+        //     // let notekeycode = 
+        //     // $("#s").keydown(function(e)) {
+        //     //     $(this).css("background-color", "black")
+
+        //     // });
+        // // d
+        // } else if(event.keyCode == 68) {
+
+        // // f
+        // } else if(event.keyCode == 70) {
+
+        // // spacebar
+        // } else if(event.keyCode == 32) {
+
+        // // h
+        // } else if(event.keyCode == 72) {
+
+        // // j
+        // } else if(event.keyCode == 74) {
+
+        // // k
+        // } else if(event.keyCode == 75) {
+
+        // }
+
+        // }
+
+
+
+        (function () {
+            document.addEventListener('keydown', function (e) {
+                const keyCode = e.keyCode;
+                // console.log('pushed key ' + e.key);
+
+                if (keyCode == 83) { // s
+                    lane1.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
+                } else if (keyCode == 68) { // d
+                    lane2.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
+                } else if (keyCode == 70) { // f
+                    lane3.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
+                // } else if (keyCode == 32) { // spacebar
+                //     lane4.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
+                } else if (keyCode == 74) { // j
+                    lane5.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
+                } else if (keyCode == 75) { // k
+                    lane6.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
+                } else if (keyCode == 76) { // l
+                    lane7.style.background = 'linear-gradient(rgba(0, 0, 0, 0), tomato)';
                 }
-            }
-            word.value = "" // 입력글자삭제
-        }
+            })
+        })();
+        window.addEventListener("keyup", e => {
+            const key = document.getElementById(e.key);
+            // if (key) key.classList.remove('pressed');
+            if (key) lane1.style.background = '';
+            if (key) lane2.style.background = '';
+            if (key) lane3.style.background = '';
+            // if (key) lane4.style.background = '';
+            if (key) lane5.style.background = '';
+            if (key) lane6.style.background = '';
+            if (key) lane7.style.background = '';
+        });
 
-        let move_interval_ms = 2000 // ms
-        let move_block = 20 // px
 
 
+
+
+        // 속도, 크기 조절
+        let move_interval_ms = 200 // ms
+        let move_block = 60 // px
 
 
         function move_words() {
@@ -238,7 +375,7 @@
             //     return
             // }
 
-            words_top = 580
+            words_top = 750
             for (let table of tables) {
                 let top = parseInt(table.style.top) // 0px
                 top += move_block
@@ -246,7 +383,7 @@
                 if (top > words_top) {
                     words.removeChild(table)
                     loss_cnt++
-                    fail.textContent = `Missing Words : ${loss_cnt}`
+                    fail.textContent = `Missing Notes : ${loss_cnt}`
                     // if (loss_cnt >= 200) {
                     //     clearInterval(interval_id)
                     //     alert("Fail ! try again")
@@ -261,7 +398,9 @@
         let interval_id = setInterval(move_words, move_interval_ms)
 
     </script>
-    <iframe id="music" width="100" height="100" hidden src="https://www.youtube.com/embed/wq9zM5je8pg?autoplay=1&loop=1&enablejsapi=1" frameborder="0" allow="autoplay; encrypted-media;" allowfullscreen></iframe>
+    <iframe id="music" width="100" height="100"
+        src="https://www.youtube.com/embed/wq9zM5je8pg?autoplay=1&loop=1&enablejsapi=1&disablekb=1&rel=0"
+        frameborder="0" allow="autoplay; encrypted-media;" allowfullscreen></iframe>
 </body>
 
 </html>
