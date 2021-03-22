@@ -11,6 +11,12 @@
 	}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="semantic/semantic.css">
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="semantic/semantic.js"></script>
 <script type="text/javascript">
 	window.onload = function() {
 		document.querySelector("#calc").onclick=calc_click
@@ -21,7 +27,7 @@
 		let num2 = document.querySelector("#num2").value
 		//let idx = document.querySelector("#opr").options.selectedIndex
 		//let opr = document.querySelector("#opr").options[idx].textContent
-		let opr = document.querySelector("#opr").textContent
+		let opr = document.querySelector('input[name="opr"]:checked').value
 		opr = encodeURIComponent(opr)
 		
 		let opt = {}

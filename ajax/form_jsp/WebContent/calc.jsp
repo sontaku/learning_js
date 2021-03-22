@@ -17,6 +17,6 @@
 	} else if ("%".equals(opr)) {
 		out.println(num1 % num2);
 	} else if ("^".equals(opr)) {
-		out.println(Math.pow(num1*1.0, num2*1.0));
+		out.println((long)Math.pow(num1, num2));
 	}
 %>
