@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숫자맞추기 Ajax v0.2</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+window.onload = function() {
+	document.querySelector("#num").onkeyup = fn_keyup
+}
+function fn_keyup(event) {
+	if(event.keyCode == 13) {
+		send_num(event.target.value)
+	}
+}
+function send_num(num) {
+	
+	// ajax with jQuery
+	let opt = {} // Object
+	opt.url = "check_num.jsp?num=" + num
+	opt.success = function(data) {
+		add_result(num + " : " + data)
+		document.querySelector("#num").value="" // 입력숫자 삭제
+		      // 정답입니다.
+		      let result = document.querySelector("#result")
+			  if(data.trim() == "정답입니다"){
+			  	result.style.border = "5px dotted red"
+			  } else {
+				  result.style.border = "1px solid black"
+			  }
+	}
+			
+	// jQuery.ajax()
+	$.ajax(opt)
+}
+	
+function add_result(txt) {
+	let res = document.querySelector("#result")
+	res.innerHTML += "<div>" + txt + "</div>"
+}
+
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	
+	<h1>숫자맞추기 Ajax v0.2</h1>
+	<div id="wrap">
+		<h2>1~100사이 숫자를 맞춰보세요</h2>
+		<!-- input은 값을 value로 갖고 있음 -->
+		<input id="num" value="">
+		
+		
+		<!-- div는 값을 textContent로 갖고 있음 -->
+		<div id="result">결과</div>
+	</div>
+	
+</body>
+</html>

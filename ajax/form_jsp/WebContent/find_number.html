@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>숫자맞추기 Ajax v0.1</title>
+
+<script>
+window.onload = function() {
+	document.querySelector("#num").onkeyup = fn_keyup
+}
+function fn_keyup(event) {
+	if(event.keyCode == 13) {
+		send_num(event.target.value)
+	}
+}
+function send_num(num) {
+	// XMLHttpRequest 객체의 생성
+	let xhr = new XMLHttpRequest()
+	// 비동기 방식으로 Request를 오픈한다
+	xhr.open("GET", "check_num.jsp?num=" + num, true)
+	// Request를 전송한다
+	xhr.send()
+	
+	// XMLHttpRequest.readyState 프로퍼티가 변경(이벤트 발생)될 때마다 콜백함수(이벤트 핸들러)를 호출한다.
+	xhr.onreadystatechange = function(e) {
+		 // readyStates는 XMLHttpRequest의 상태(state)를 반환
+		  // readyState: 4 => DONE(서버 응답 완료)
+		  // if (xhr.readyState === XMLHttpRequest.DONE) {
+		  if (xhr.readyState === 4) {
+		    // status는 response 상태 코드를 반환 : 200 => 정상 응답
+		    if(xhr.status == 200) {
+		      add_result(xhr.responseText)
+		      document.querySelector("#num").value = ""
+		      console.log(xhr.responseText)
+		      // 정답입니다.
+			  if(xhr.responseText.trim() == "정답입니다"){
+			  	result.style.border = "5px dotted red"
+			  } else {
+				  result.style.border = "1px solid black"
+			  }
+		    } 
+		  }
+	}
+}
+	
+function add_result(txt) {
+	let res = document.querySelector("#result")
+	res.innerHTML += "<div>" + txt + "</div>"
+}
+
+</script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	
+	<h1>숫자맞추기 Ajax v0.1</h1>
+	<div id="wrap">
+		<h2>1~100사이 숫자를 맞춰보세요</h2>
+		<!-- input은 값을 value로 갖고 있음 -->
+		<input id="num" value="">
+		
+		
+		<!-- div는 값을 textContent로 갖고 있음 -->
+		<div id="result">결과</div>
+	</div>
+	
+</body>
+</html>

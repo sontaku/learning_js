@@ -1,0 +1,21 @@
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="EUC-KR">
+<title>Insert title here</title>
+</head>
+<body>
+
+JSP TEST
+  <form action="http://localhost:8081/form_jsp/form_res.jsp">
+        <input type="text" name="query" id="네이버"><br>
+
+        <!--중복 text 검색창은 첫번째꺼 이외 무효함-->
+        <!-- 하지만 내용은 전송이 됨 -> query=111&query2=222 -->
+        <input type="submit" value="전송">
+        <!-- 2개 이상 검색창은 submit -->
+    </form>
+</body>
+</html>
