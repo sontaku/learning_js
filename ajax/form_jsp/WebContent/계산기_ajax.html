@@ -19,8 +19,9 @@
 	function calc_click() {
 		let num1 = document.querySelector("#num1").value
 		let num2 = document.querySelector("#num2").value
-		let idx = document.querySelector("#opr").options.selectedIndex
-		let opr = document.querySelector("#opr").options[idx].textContent
+		//let idx = document.querySelector("#opr").options.selectedIndex
+		//let opr = document.querySelector("#opr").options[idx].textContent
+		let opr = document.querySelector("#opr").textContent
 		opr = encodeURIComponent(opr)
 		
 		let opt = {}
@@ -44,7 +45,7 @@
 				<option>-</option>
 				<option>*</option>
 				<option>/</option> -->
-				<form action="calc.jsp"> <!-- name값 호출 방식 바꾸기 -->
+				<form action="calc.jsp" id="opr"> <!-- name값 호출 방식 바꾸기 -->
 					<input type="radio" name="opr" value="+" checked/>+
       				<input type="radio" name="opr" value="-"/>-
       				<input type="radio" name="opr" value="*"/>*
