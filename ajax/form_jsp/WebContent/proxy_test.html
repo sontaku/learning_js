@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	document.querySelector("#naver").onclick = naver_click
+	
+	function naver_click() {
+		let opt = {}
+		// opt.url = "https://www.naver.com"
+		opt.url = "proxy_naver.jsp"
+		opt.success = function(data) {
+			// 크롤링시 괜찮은 방법
+			//let tits = $(data, find(".hdline_article_tit a") 
+			let tits = $(data).find(".hdline_article_tit a")
+			let str = "<ul>"
+			for(let t of tits) {
+				// console 확인
+				// console.log(t.textContent.trim())
+				
+				str += "<li>" + t.textContent.trim() + "</li>"
+			}
+			str += "</ul>"
+			document.querySelector("#result").innerHTML = str
+		}
+		$.ajax( opt )
+	}
+}
+</script>
+
+</head>
+<body>
+
+	<button id="naver">네이버</button>
+	<div id="result"></div>
+
+</body>
+</html>

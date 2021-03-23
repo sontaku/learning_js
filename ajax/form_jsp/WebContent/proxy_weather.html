@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>날씨누리</title>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript">
+window.onload = function() {
+	document.querySelector("#weather").onclick = weather_click
+	
+	function weather_click() {
+		let opt = {}
+		// opt.url = "https://www.naver.com"
+		opt.url = "proxy_weather.jsp"
+		opt.success = function(data) {
+			let ctg = $(data).find("category")[0].textContent
+			let result = document.querySelector("#result")
+			result.innerHTML = "<h2> 지역명 : " + ctg + "</h2>"
+		
+			// 날씨는 <data>안에 3시간 단위로 저장됨
+			// 그래서 <data> 추출 후 <data>안 내부 검색 한 번 더 해야함
+			let datas = $(data).find("data") // <data>..<data>..
+			let days = ["오늘", "내일", "모레"]
+			for(let dt of datas) {
+				// 서브 태그 검색
+				let hour = $(dt).find("hour")[0].textContent
+				let day = $(dt).find("day")[0].textContent
+				day = days[Number(day)]
+				let temp = $(dt).find("temp")[0].textContent
+				let wfKor = $(dt).find("wfKor")[0].textContent
+				let pty = $(dt).find("pty")[0].textContent
+				let sky = $(dt).find("sky")[0].textContent
+				// let n = `${pty}` + `${sky}`
+				let n = Number(pty) + Number(sky)
+				let imgurl = `https://www.weather.go.kr/home/images/icon/DY/DB0${n}.png`
+				let str = `<div>${day} ${hour}시 ${temp}℃ ${wfKor} <img src="${imgurl}"></div>`
+				result.innerHTML +=  str
+			}
+		}
+		$.ajax( opt )
+	}
+}
+</script>
+
+</head>
+<body>
+
+	<button id="weather">날씨누리 날씨 예보</button>
+	<div id="result"></div>
+
+</body>
+</html>

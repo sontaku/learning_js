@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>조선일보</title>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+window.onload = function() {
+	document.querySelector("#news").onclick = weather_click
+	
+	function weather_click() {
+		let opt = {}
+		opt.url = "손진영_news_proxy.jsp"
+		opt.success = function(data) {
+			let ctg = $(data).find("title")[0].textContent
+			let result = document.querySelector("#result")
+			let result_info = document.querySelector("#result_info")
+			result.innerHTML = "<h1>" + ctg + "</h1>"
+						
+			let items = $(data).find("item")
+			
+			for(let item of items) {				
+				let title = $(item).find("title")[0].textContent
+				let link = $(item).find("link")[0].textContent
+				title = title.substring(9, title.length - 3)
+				let description = $(item).find("description")[0].textContent
+				let pubDate = $(item).find("pubDate")[0].textContent
+				let author = $(item).find("author")[0].textContent
+				let comments = $(item).find("comments")[0].textContent
+				let category = $(item).find("category")[0].textContent
+				
+				result.innerHTML += `<div><a href=${link}>${title}</a></div>`
+						
+			}
+			
+		}
+		$.ajax( opt )
+	}
+}
+</script>
+
+</head>
+<body>
+
+	<button id="news">뉴스</button>
+	<div id="result"></div>
+	<div id="result_info"></div>
+
+</body>
+</html>

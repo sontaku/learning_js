@@ -82,7 +82,7 @@
 		opr = encodeURIComponent(opr)
 
 		let opt = {}
-		opt.url = "calc.jsp?num1=" + num1 + "&num2=" + num2 + "&opr=" + opr
+		opt.url = "http://localhost:8100/form_jsp/calc.jsp?num1=" + num1 + "&num2=" + num2 + "&opr=" + opr
 		opt.success = function(data) {
 			//document.querySelector("#result").value = data
 			document.getElementsByName('resultip')[0].placeholder = data
