@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>날씨누리</title>
-<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 window.onload = function() {
 	document.querySelector("#weather").onclick = weather_click
@@ -17,19 +18,23 @@ window.onload = function() {
 			result.innerHTML = "<h1>" + ctg + "</h1>"
 			
 			let locs = $(data).find("location")
+			
 			for(let loc of locs) {
 				let province = $(loc).find("province")[0].textContent
+				result.innerHTML += `<div><h2>${province}</h2></div>`
 				let city = $(loc).find("city")[0].textContent
 				let datas = $(loc).find("data")
+				result.innerHTML += `<div><h3>${city}</h3></div>`
 				for(let data of datas) {
 					let tmEf = $(data).find("tmEf")[0].textContent
 					let wf = $(data).find("wf")[0].textContent
 					let tmn = $(data).find("tmn")[0].textContent
 					let tmx = $(data).find("tmx")[0].textContent
 					let rnSt = $(data).find("rnSt")[0].textContent
-					result_info.innerHTML += `<div>${province} ${city} ${tmEf} ${wf} ${tmn} ${tmx} ${rnSt} </div>`
+					result.innerHTML += `<div>${tmEf} ${wf}</div>`
 				}
 			}
+		
 		}
 		$.ajax( opt )
 	}
