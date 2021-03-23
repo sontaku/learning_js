@@ -7,9 +7,6 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script type="text/javascript">
 window.onload = function() {
-	document.querySelector("#weather").onclick = weather_click
-	
-	function weather_click() {
 		let opt = {}
 		opt.url = "손진영_weather_proxy.jsp"
 		opt.success = function(data) {
@@ -37,14 +34,12 @@ window.onload = function() {
 		
 		}
 		$.ajax( opt )
-	}
 }
 </script>
 
 </head>
 <body>
 
-	<button id="weather">중기예보</button>
 	<div id="result"></div>
 	<div id="result_info"></div>
 
