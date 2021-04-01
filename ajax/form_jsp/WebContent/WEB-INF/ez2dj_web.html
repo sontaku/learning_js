@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Rhythm" />
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="shortcut icon" href="#">
+    <link rel="stylesheet" href="css/style.css" />
+    <link href="http://fonts.googleapis.com/earlyaccess/nanumgothic.css" rel="stylesheet">
+    <title>EZ2DJ</title>
+<style>
+    @import url(//fonts.googleapis.com/earlyaccess/hanna.css);
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/*
+ * key 컬러
+ */
+:root {
+  
+  --background: linear-gradient(to top, rgba(1, 1, 0, 1), rgba(1, 1, 0, 0.8));
+  --hit-color: rgba(255, 255, 255, 0.8);
+  --key-red: burlywood;
+  --key-blue: burlywood;
+  --key-orange: burlywood;
+  --keypress-red: linear-gradient(
+    to top,
+    lightgreen,
+    rgba(254, 45, 87, 0)
+  );
+  --keypress-blue: linear-gradient(
+    to top,
+    lightblue,
+    rgba(28, 121, 228, 0)
+  );
+  --keypress-orange: linear-gradient(
+    to top,
+    rgba(240, 128, 60, 0.6),
+    rgba(240, 128, 60, 0)
+  );
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-family: "Nanum Gothic", sans-serif;
+  background-size: cover;
+  /* background: black url("https://img2.quasarzone.com/editor/2020/06/24/2a18564000e81fa330caaeef94608eb5.jpg") center; */
+  
+  /* background-size: 100%; */
+  background-image: url("https://i.gifer.com/fyrX.gif");
+
+  overflow: hidden;
+}
+
+main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+}
+
+h2 {
+  padding: 1rem;
+  text-transform: uppercase;
+}
+
+/* #score_board {
+  display: flex;
+  flex: 0 0 calc(100% / 2);
+  flex-direction: column;
+  max-width: 35rem;
+  height: 8%;
+  margin: 0 auto;
+  position: relative;
+} */
+
+.game {
+  position: relative;
+  display: flex;
+  flex: 0 0 calc(100% / 2);
+  flex-direction: column;
+  max-width: 35rem;
+  height: 80%;
+  top: 10%;
+  /* background: black; */
+  background: url(https://upload.wikimedia.org/wikipedia/commons/2/2f/Hubble_ultra_deep_field.jpg);
+  margin: 0 auto;
+}
+
+.hit {
+  position: absolute;
+  width: 50%;
+  height: 20%;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+#combo_word {
+  font-size: 4rem;
+  position: relative;
+  width: 100%;
+  margin: 0 auto; 
+  text-align: center;
+  /* float: left; */
+  opacity: 0.7;
+}
+h4 {
+  margin: 0 auto;
+  padding: 0;
+  background: linear-gradient(linen 10%, orange 20%, red 60%, linen 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hit__combo {
+  width: 100%;
+  height: 80%;
+  font-size: 10rem;
+  position: relative;
+  /* color: rgba(255, 199, 126, 0.8); */
+  background: linear-gradient(linen 10%, orange 20%, red 60%, linen 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.7;
+  bottom: 0px;
+}
+
+.track-container {
+  
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.track {
+  position: relative;
+  flex: 0 0 calc(100% / 7);
+}
+
+.track:not(:last-child) {
+  border-right: 0.1px solid cadetblue;
+}
+
+.key-container {
+  display: flex;
+  flex: 0 0 15%;
+  /* height: 10%; */
+}
+
+.key {
+  flex: 0 0 calc(100% / 7);
+  /* border-left: 1px solid grey;
+  border-right: 1px solid grey; */
+  border: 3px lightslategrey groove;
+  text-align: center;
+  position: relative;
+  font-size: 1.6rem;
+}
+
+.key--red {
+  background: var(--key-red);
+}
+
+.key--blue {
+  background: var(--key-blue);
+}
+
+.key--orange {
+  background: var(--key-orange);
+}
+
+.key span {
+  font-weight: bold;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  padding-top: 0.5rem;
+}
+
+.note {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+  height: 1.5rem;
+  top: -1.5rem;
+}
+
+@-webkit-keyframes sparkle {
+  from {
+      background-position: 0% 100%;
+  }
+
+  to {
+      background-position: 200% 100%;
+  }
+}
+
+@keyframes sparkle {
+  from {
+      background-position: 0% 100%;
+  }
+
+  to {
+      background-position: 200% 100%;
+  }
+}
+
+.note:before {
+  -webkit-animation: sparkle 3s infinite linear;
+  animation: sparkle 3s infinite linear;
+  background: linear-gradient(90deg, #7FEFBD 0%, #FFF689 11%, #EC0B43 22%, #7FEFBD 33%, #FFF689 44%, #EC0B43 55%, #7FEFBD 66%, #FFF689 77%, #EC0B43 88%, #7FEFBD 100%);
+  background-size: 300% 100%;
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  filter: blur(3px);
+  z-index: 1;
+  transform: scale(0.9) translateY(1px);
+}
+
+.keypress {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -100%;
+  display: none;
+}
+
+.key__hit {
+  position: absolute;
+  width: 2rem;
+  height: 2rem;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: 0 0;
+  background: var(--hit-color);
+  opacity: 0;
+  border-radius: 50%;
+  animation: scaleFade 1s;
+}
+
+.key__hit:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--hit-color);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: scaleBorder 1s;
+}
+
+.keypress--red {
+  background-image: var(--keypress-red);
+}
+
+.keypress--blue {
+  background-image: var(--keypress-blue);
+}
+
+.keypress--orange {
+  background-image: var(--keypress-orange);
+}
+
+.menu {
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 calc(100% / 2);
+  font-size: 2rem;
+  color: white;
+  text-align: center;
+  justify-content: space-around;
+  transition: all 1s;
+}
+
+.menu__config {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn:link,
+.btn:visited {
+  display: inline-block;
+  border-radius: 25px 25px 25px 25px;
+  background-color: black;
+  opacity: 0.8;
+  border: 1px solid white;
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.2s;
+  color: white;
+  margin: 0 auto;
+  transition: all 0.2s;
+  
+}
+
+
+
+.btn:hover,
+.btn:active {
+  background: white;
+  color: black;
+}
+
+.btn--small {
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  line-height: 7rem;
+  vertical-align: center;
+}
+
+.btn--primary {
+  border-radius: 1rem;
+  padding: 2rem 4rem;
+}
+
+.config__speed {
+  border-radius: 25px 25px 25px 25px;
+  background-color: black;
+  opacity: 0.8;
+}
+
+
+
+.config__speed .btn--selected {
+  background: white;
+  color: black;
+}
+
+.btn--selected {
+  background: white;
+  color: black;
+}
+
+.summary {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  left: 50%;
+  color: white;
+  text-align: center;
+  z-index: -100;
+}
+
+.summary__timer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  font-size: 6rem;
+  opacity: 0;
+  transition: all 1s;
+}
+
+
+.combo {
+  color: var(--maxcombo-color);
+}
+
+.score {
+  color: var(--score-color);
+}
+
+@keyframes moveDown {
+  0% {
+    top: -1.5rem;
+  }
+  98% {
+    top: 100%;
+    opacity: 1;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+@keyframes moveDownFade {
+  0% {
+    top: -1.5rem;
+  }
+  60% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+  98% {
+    top: 100%;
+    opacity: 0;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scaleFade {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    width: 4rem;
+    height: 4rem;
+  }
+}
+
+@keyframes scaleBorder {
+  100% {
+    width: 10rem;
+    height: 10rem;
+    border: 2px solid transparent;
+  }
+}
+</style>  
+</head>
+
+  <body>
+    <iframe class="song" hidden src="https://www.youtube.com/embed/wq9zM5je8pg?enablejsapi=1&version=3&playerapiid=ytplayer" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <main>
+      <div id="score_board"></div>
+      <div class="game">
+        <div class="hit">
+          <div id="combo_word">
+          </div>
+          <div class="hit__combo"></div>
+        </div>
+
+        <div class="track-container"></div>
+
+        <div class="key-container">
+          <div class="key key--s key--blue">
+            <div class="keypress keypress--blue"></div>
+            <span>S</span>
+          </div>
+          <div class="key key--d key--red">
+            <div class="keypress keypress--red"></div>
+            <span>D</span>
+          </div>
+          <div class="key key--f key--blue">
+            <div class="keypress keypress--blue"></div>
+            <span>F</span>
+          </div>
+          <div class="key key--space key--orange">
+            <div class="keypress keypress--orange"></div>
+            <span>Space</span>
+          </div>
+          <div class="key key--j key--blue">
+            <div class="keypress keypress--blue"></div>
+            <span>J</span>
+          </div>
+          <div class="key key--k key--red">
+            <div class="keypress keypress--red"></div>
+            <span>K</span>
+          </div>
+          <div class="key key--l key--blue">
+            <div class="keypress keypress--blue"></div>
+            <span>L</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu">
+        <div class="menu__config">
+          <div class="config__speed">
+            <h2>Speed</h2>
+            <div>
+              <a class="btn btn--small btn--selected" href="#">1x</a>
+              <a class="btn btn--small" href="#">2x</a>
+              <a class="btn btn--small" href="#">3x</a>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="menu_start">
+          <a class="btn btn--primary btn--start" href="#">Start</a>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div class="summary__timer"></div>
+      </div>
+    </main>
+
+    
+    <script>
+        var s = {
+  color: 'rgba(28, 121, 228, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 3.5 },
+    { duration: 3, delay: 9.1 },
+    { duration: 3, delay: 16.1 },
+    { duration: 3, delay: 19.1 },
+    { duration: 3, delay: 20.9 },
+    { duration: 3, delay: 22.1 },
+    { duration: 3, delay: 22.4 },
+    { duration: 3, delay: 22.9 },
+    { duration: 3, delay: 23.1 },
+    { duration: 3, delay: 23.8 },
+    { duration: 3, delay: 24.0 },
+    { duration: 3, delay: 24.8 },
+    { duration: 3, delay: 25.0 },
+    { duration: 3, delay: 26.9 },
+    { duration: 3, delay: 28.0 },
+    { duration: 3, delay: 44.3 },
+    { duration: 3, delay: 46.1 },
+    { duration: 3, delay: 48.3 },
+    { duration: 3, delay: 49.4 },
+    { duration: 3, delay: 51.7 },
+    { duration: 3, delay: 52.9 },
+    { duration: 3, delay: 55.3 },
+    { duration: 3, delay: 56.4 },
+    { duration: 3, delay: 63.9 },
+    { duration: 3, delay: 66.5 },
+    { duration: 3, delay: 69.0 },
+    { duration: 3, delay: 70.9 },
+    { duration: 3, delay: 72.1 },
+    { duration: 3, delay: 72.7 },
+    { duration: 3, delay: 73.9 },
+    { duration: 3, delay: 75.3 },
+    { duration: 3, delay: 105.7 }
+
+  ]
+};
+
+var d = {
+  color: 'rgba(254, 45, 87, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 4.9 },
+    { duration: 3, delay: 7.2 },
+    { duration: 3, delay: 9.1 },
+    { duration: 3, delay: 11.6 },
+    { duration: 3, delay: 14.6 },
+    { duration: 3, delay: 16.8 },
+    { duration: 3, delay: 19.8 },
+    { duration: 3, delay: 21.3 },
+    { duration: 3, delay: 21.7 },
+    { duration: 3, delay: 22.6 },
+    { duration: 3, delay: 30.6 },
+    { duration: 3, delay: 32.4 },
+    { duration: 3, delay: 33.9 },
+    { duration: 3, delay: 36.5 },
+    { duration: 3, delay: 38.3 },
+    { duration: 3, delay: 39.9 },
+    { duration: 3, delay: 42.4 },
+    { duration: 3, delay: 57.6 },
+    { duration: 3, delay: 58.2 },
+    { duration: 3, delay: 60.2 },
+    { duration: 3, delay: 61.3 },
+    { duration: 3, delay: 62.0 },
+    { duration: 3, delay: 63.1 },
+    { duration: 3, delay: 76.1 },
+    { duration: 3, delay: 77.6 },
+    { duration: 3, delay: 79.8 },
+    { duration: 3, delay: 81.7 },
+    { duration: 3, delay: 83.9 },
+    { duration: 3, delay: 85.7 },
+    { duration: 3, delay: 87.6 },
+    { duration: 3, delay: 89.4 },
+    { duration: 3, delay: 91.7 },
+    { duration: 3, delay: 93.5 },
+    { duration: 3, delay: 95.0 },
+    { duration: 3, delay: 96.5 },
+    { duration: 3, delay: 97.9 },
+    { duration: 3, delay: 99.4 },
+    { duration: 3, delay: 102.0 },
+    { duration: 3, delay: 104.6 }
+  ]
+};
+
+var f = {
+  color: 'rgba(28, 121, 228, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 6.4 },
+    { duration: 3, delay: 8.7 },
+    { duration: 3, delay: 10.9 },
+    { duration: 3, delay: 13.9 },
+    { duration: 3, delay: 16.1 },
+    { duration: 3, delay: 19.1 },
+    { duration: 3, delay: 26.5 },
+    { duration: 3, delay: 27.8 },
+    { duration: 3, delay: 30.2 },
+    { duration: 3, delay: 31.6 },
+    { duration: 3, delay: 33.7 },
+    { duration: 3, delay: 36.1 },
+    { duration: 3, delay: 37.6 },
+    { duration: 3, delay: 39.6 },
+    { duration: 3, delay: 42.0 },
+    { duration: 3, delay: 42.8 },
+    { duration: 3, delay: 43.5 },
+    { duration: 3, delay: 59.8 },
+    { duration: 3, delay: 61.3 },
+    { duration: 3, delay: 63.5 },
+    { duration: 3, delay: 65.7 },
+    { duration: 3, delay: 68.7 },
+    { duration: 3, delay: 70.2 },
+    { duration: 3, delay: 89.1 },
+    { duration: 3, delay: 90.9 },
+    { duration: 3, delay: 93.1 },
+    { duration: 3, delay: 94.6 },
+    { duration: 3, delay: 96.1 },
+    { duration: 3, delay: 97.6 },
+    { duration: 3, delay: 99.0 },
+    { duration: 3, delay: 101.3 },
+    { duration: 3, delay: 104.2 },
+    { duration: 3, delay: 105.7 }
+  ]
+};
+
+var space = {
+  color: 'rgba(240, 128, 60, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 8.3 },
+    { duration: 3, delay: 8.7 },
+    { duration: 3, delay: 21.9 },
+    { duration: 3, delay: 22.8 },
+    { duration: 3, delay: 23.6 },
+    { duration: 3, delay: 24.6 },
+    { duration: 3, delay: 26.1 },
+    { duration: 3, delay: 27.6 },
+    { duration: 3, delay: 30.6 },
+    { duration: 3, delay: 32.4 },
+    { duration: 3, delay: 42.8 },
+    { duration: 3, delay: 43.5 },
+    { duration: 3, delay: 45.4 },
+    { duration: 3, delay: 45.8 },
+    { duration: 3, delay: 47.2 },
+    { duration: 3, delay: 48.0 },
+    { duration: 3, delay: 48.7 },
+    { duration: 3, delay: 49.1 },
+    { duration: 3, delay: 50.9 },
+    { duration: 3, delay: 51.3 },
+    { duration: 3, delay: 52.4 },
+    { duration: 3, delay: 52.8 },
+    { duration: 3, delay: 53.9 },
+    { duration: 3, delay: 54.6 },
+    { duration: 3, delay: 55.9 },
+    { duration: 3, delay: 56.1 },
+    { duration: 3, delay: 57.4 },
+    { duration: 3, delay: 58.1 },
+    { duration: 3, delay: 72.0 },
+    { duration: 3, delay: 72.6 },
+    { duration: 3, delay: 73.2 },
+    { duration: 3, delay: 75.2 },
+    { duration: 3, delay: 75.8 },
+    { duration: 3, delay: 76.9 },
+    { duration: 3, delay: 79.0 },
+    { duration: 3, delay: 81.3 },
+    { duration: 3, delay: 83.5 },
+    { duration: 3, delay: 85.0 },
+    { duration: 3, delay: 87.2 },
+    { duration: 3, delay: 87.6 },
+    { duration: 3, delay: 89.4 },
+    { duration: 3, delay: 100.5 },
+    { duration: 3, delay: 105.7 }
+  ]
+};
+
+var j = {
+  color: 'rgba(28, 121, 228, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 4.9 },
+    { duration: 3, delay: 8.3 },
+    { duration: 3, delay: 10.1 },
+    { duration: 3, delay: 13.1 },
+    { duration: 3, delay: 15.4 },
+    { duration: 3, delay: 18.3 },
+    { duration: 3, delay: 20.5 },
+    { duration: 3, delay: 29.4 },
+    { duration: 3, delay: 30.9 },
+    { duration: 3, delay: 33.5 },
+    { duration: 3, delay: 35.3 },
+    { duration: 3, delay: 36.8 },
+    { duration: 3, delay: 39.4 },
+    { duration: 3, delay: 41.3 },
+    { duration: 3, delay: 48.3 },
+    { duration: 3, delay: 49.4 },
+    { duration: 3, delay: 57.2 },
+    { duration: 3, delay: 57.9 },
+    { duration: 3, delay: 59.1 },
+    { duration: 3, delay: 60.9 },
+    { duration: 3, delay: 61.3 },
+    { duration: 3, delay: 63.1 },
+    { duration: 3, delay: 65.0 },
+    { duration: 3, delay: 67.9 },
+    { duration: 3, delay: 69.8 },
+    { duration: 3, delay: 71.8 },
+    { duration: 3, delay: 72.4 },
+    { duration: 3, delay: 73.0 },
+    { duration: 3, delay: 75.0 },
+    { duration: 3, delay: 75.7 },
+    { duration: 3, delay: 76.6 },
+    { duration: 3, delay: 78.3 },
+    { duration: 3, delay: 78.7 },
+    { duration: 3, delay: 80.9 },
+    { duration: 3, delay: 82.8 },
+    { duration: 3, delay: 84.6 },
+    { duration: 3, delay: 86.5 },
+    { duration: 3, delay: 88.0 },
+    { duration: 3, delay: 88.7 },
+    { duration: 3, delay: 90.6 },
+    { duration: 3, delay: 92.8 },
+    { duration: 3, delay: 94.3 },
+    { duration: 3, delay: 95.7 },
+    { duration: 3, delay: 97.2 },
+    { duration: 3, delay: 98.7 },
+    { duration: 3, delay: 100.5 },
+    { duration: 3, delay: 103.5 },
+    { duration: 3, delay: 105.3 },
+    { duration: 3, delay: 105.7 }
+
+  ]
+};
+
+var k = {
+  color: 'rgba(254, 45, 87, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 3.5 },
+    { duration: 3, delay: 8.0 },
+    { duration: 3, delay: 9.4 },
+    { duration: 3, delay: 12.4 },
+    { duration: 3, delay: 15.0 },
+    { duration: 3, delay: 17.6 },
+    { duration: 3, delay: 20.2 },
+    { duration: 3, delay: 21.7 },
+    { duration: 3, delay: 22.6 },
+    { duration: 3, delay: 23.3 },
+    { duration: 3, delay: 39.0 },
+    { duration: 3, delay: 40.5 },
+    { duration: 3, delay: 42.6 },
+    { duration: 3, delay: 45.0 },
+    { duration: 3, delay: 46.5 },
+    { duration: 3, delay: 64.5 },
+    { duration: 3, delay: 50.2 },
+    { duration: 3, delay: 64.3 },
+    { duration: 3, delay: 67.2 },
+    { duration: 3, delay: 69.4 },
+    { duration: 3, delay: 71.7 },
+    { duration: 3, delay: 72.3 },
+    { duration: 3, delay: 72.9 },
+    { duration: 3, delay: 75.0 },
+    { duration: 3, delay: 75.7 },
+    { duration: 3, delay: 76.6 },
+    { duration: 3, delay: 86.1 },
+    { duration: 3, delay: 88.0 },
+    { duration: 3, delay: 90.2 },
+    { duration: 3, delay: 95.7 },
+    { duration: 3, delay: 98.3 },
+    { duration: 3, delay: 99.8 },
+    { duration: 3, delay: 102.8 },
+    { duration: 3, delay: 104.9 }
+
+  ]
+};
+
+var l = {
+  color: 'rgba(28, 121, 228, 1)',
+  next: 0,
+  notes: [
+    { duration: 3, delay: 24.3 },
+    { duration: 3, delay: 25.7 },
+    { duration: 3, delay: 27.2 },
+    { duration: 3, delay: 28.7 },
+    { duration: 3, delay: 30.7 },
+    { duration: 3, delay: 33.1 },
+    { duration: 3, delay: 34.6 },
+    { duration: 3, delay: 36.6 },
+    { duration: 3, delay: 52.0 },
+    { duration: 3, delay: 53.2 },
+    { duration: 3, delay: 55.7 },
+    { duration: 3, delay: 56.8 },
+    { duration: 3, delay: 57.7 },
+    { duration: 3, delay: 58.4 },
+    { duration: 3, delay: 60.5 },
+    { duration: 3, delay: 62.8 },
+    { duration: 3, delay: 74.6 },
+    { duration: 3, delay: 75.5 },
+    { duration: 3, delay: 76.5 },
+    { duration: 3, delay: 78.3 },
+    { duration: 3, delay: 80.5 },
+    { duration: 3, delay: 82.0 },
+    { duration: 3, delay: 84.2 },
+    { duration: 3, delay: 92.4 },
+    { duration: 3, delay: 93.9 },
+    { duration: 3, delay: 95.3 },
+    { duration: 3, delay: 96.8 },
+    { duration: 3, delay: 98.3 },
+    { duration: 3, delay: 99.8 },
+    { duration: 3, delay: 105.7 }
+  ]
+};
+
+var song = {
+  duration: 56,
+  sheet: [s, d, f, space, j, k, l]
+};
+
+
+
+var isHolding = {
+    s: false,
+    d: false,
+    f: false,
+    ' ': false,
+    j: false,
+    k: false,
+    l: false
+  };
+  
+  var hits = { perfect: 0, good: 0, bad: 0, miss: 0 };
+  var multiplier = {
+    perfect: 1,
+    good: 0.8,
+    bad: 0.5,
+    miss: 0,
+    combo40: 1.05,
+    combo80: 1.10
+  };
+  var isPlaying = false;
+  var speed = 0;
+  var combo = 0;
+  var maxCombo = 0;
+  var score = 0;
+  var animation = 'moveDown';
+  var startTime;
+  var trackContainer;
+  var tracks;
+  var keypress;
+  var comboText;
+  
+  var initializeNotes = function () {
+    var noteElement;
+    var trackElement;
+  
+    while (trackContainer.hasChildNodes()) {
+      trackContainer.removeChild(trackContainer.lastChild);
+    }
+  
+    song.sheet.forEach(function (key, index) {
+      trackElement = document.createElement('div');
+      trackElement.classList.add('track');
+  
+      key.notes.forEach(function (note) {
+        noteElement = document.createElement('div');
+        noteElement.classList.add('note');
+        noteElement.classList.add('note--' + index);
+        noteElement.style.backgroundColor = key.color;
+        noteElement.style.animationName = animation;
+        noteElement.style.animationTimingFunction = 'linear';
+        noteElement.style.animationDuration = note.duration - speed + 's';
+        noteElement.style.animationDelay = note.delay + speed + 's';
+        noteElement.style.animationPlayState = 'paused';
+        trackElement.appendChild(noteElement);
+      });
+  
+      trackContainer.appendChild(trackElement);
+      tracks = document.querySelectorAll('.track');
+    });
+  };
+  
+  var setupSpeed = function () {
+    var buttons = document.querySelectorAll('.btn--small');
+  
+    buttons.forEach(function (button) {
+      button.addEventListener('click', function () {
+        if (this.innerHTML === '1x') {
+          buttons[0].className = 'btn btn--small btn--selected';
+          buttons[1].className = 'btn btn--small';
+          buttons[2].className = 'btn btn--small';
+          speed = parseInt(this.innerHTML) - 1;
+        } else if (this.innerHTML === '2x') {
+          buttons[0].className = 'btn btn--small';
+          buttons[1].className = 'btn btn--small btn--selected';
+          buttons[2].className = 'btn btn--small';
+          speed = parseInt(this.innerHTML) - 1;
+        } else if (this.innerHTML === '3x') {
+          buttons[0].className = 'btn btn--small';
+          buttons[1].className = 'btn btn--small';
+          buttons[2].className = 'btn btn--small btn--selected';
+          speed = parseInt(this.innerHTML) - 1;
+        }
+  
+        initializeNotes();
+      });
+    });
+  };
+  
+  
+  var updateAnimation = function () {
+    animation = 'moveDownFade';
+    initializeNotes();
+  };
+  
+  var setupStartButton = function () {
+    var startButton = document.querySelector('.btn--start');
+    startButton.addEventListener('click', function () {
+      isPlaying = true;
+      startTime = Date.now();
+  
+      document.querySelector('.menu').style.opacity = 0;
+            $(".song")[0].contentWindow.postMessage('{"event":"command","func":"' + 'playVideo' + '","args":""}', '*');
+        document.querySelectorAll('.note').forEach(function (note) {
+          note.style.animationPlayState = 'running';
+        });
+    });
+  };
+  
+ 
+  var setupNoteMiss = function () {
+    trackContainer.addEventListener('animationend', function (event) {
+      var index = event.target.classList.item(1)[6];
+  
+      displayAccuracy('miss');
+      updateHits('miss');
+      updateCombo('miss');
+      updateMaxCombo();
+      removeNoteFromTrack(event.target.parentNode, event.target);
+      updateNext(index);
+    });
+  };
+ 
+  var setupKeys = function () {
+    document.addEventListener('keydown', function (event) {
+      var keyIndex = getKeyIndex(event.key);
+  
+      if (Object.keys(isHolding).indexOf(event.key) !== -1
+        && !isHolding[event.key]) {
+        isHolding[event.key] = true;
+        keypress[keyIndex].style.display = 'block';
+  
+        if (isPlaying && tracks[keyIndex].firstChild) {
+          judge(keyIndex);
+        }
+      }
+    });
+  
+    document.addEventListener('keyup', function (event) {
+      if (Object.keys(isHolding).indexOf(event.key) !== -1) {
+        var keyIndex = getKeyIndex(event.key);
+        isHolding[event.key] = false;
+        keypress[keyIndex].style.display = 'none';
+      }
+    });
+  };
+  
+  var getKeyIndex = function (key) {
+    if (key === 's') {
+      return 0;
+    } else if (key === 'd') {
+      return 1;
+    } else if (key === 'f') {
+      return 2;
+    } else if (key === ' ') {
+      return 3;
+    } else if (key === 'j') {
+      return 4;
+    } else if (key === 'k') {
+      return 5;
+    } else if (key === 'l') {
+      return 6;
+    }
+  };
+  
+  var judge = function (index) {
+    var timeInSecond = (Date.now() - startTime) / 1000;
+    var nextNoteIndex = song.sheet[index].next;
+    var nextNote = song.sheet[index].notes[nextNoteIndex];
+    var perfectTime = nextNote.duration + nextNote.delay;
+    var accuracy = Math.abs(timeInSecond - perfectTime);
+    var hitJudgement;
+  
+    if (accuracy > (nextNote.duration - speed) / 4) {
+      return;
+    }
+  
+    hitJudgement = getHitJudgement(accuracy);
+    displayAccuracy(hitJudgement);
+    showHitEffect(index);
+    updateHits(hitJudgement);
+    updateCombo(hitJudgement);
+    updateMaxCombo();
+    calculateScore(hitJudgement);
+    removeNoteFromTrack(tracks[index], tracks[index].firstChild);
+    updateNext(index);
+  };
+  
+  var getHitJudgement = function (accuracy) {
+    if (accuracy < 0.1) {
+      return 'perfect';
+    } else if (accuracy < 0.2) {
+      return 'good';
+    } else if (accuracy < 0.3) {
+      return 'bad';
+    } else {
+      return 'miss';
+    }
+  };
+  
+  var displayAccuracy = function (accuracy) {
+    var accuracyText = document.createElement('div');
+    accuracyText.innerHTML = accuracy;
+  };
+  
+  var showHitEffect = function (index) {
+    var key = document.querySelectorAll('.key')[index];
+    var hitEffect = document.createElement('div');
+    hitEffect.classList.add('key__hit');
+    key.appendChild(hitEffect);
+  };
+  
+  var updateHits = function (judgement) {
+    hits[judgement]++;
+  };
+  
+  var updateCombo = function (judgement) {
+    
+    if (judgement === 'bad' || judgement === 'miss') {
+      combo = 0;
+      comboText.innerHTML = '';
+      combo_word.innerHTML = '';
+      combo_word.style.opacity = 0;
+    } else {
+      // $("#combo_word").animate({top: "0px"}, 1);
+      $(".hit").animate({top: "50%"}, 1)
+      combo_word.innerHTML = "<h4>combo</h4>";
+      combo_word.style.opacity = 0.7;
+      comboText.innerHTML = ++combo;
+      // $("#combo_word").animate({top: "30px"}, 20);
+      $(".hit").animate({top: "55%"}, 20);
+    }
+  };
+  
+  var updateMaxCombo = function () {
+    maxCombo = maxCombo > combo ? maxCombo : combo;
+  };
+  
+  var calculateScore = function (judgement) {
+    if (combo >= 80) {
+      score += 1000 * multiplier[judgement] * multiplier.combo80;
+    } else if (combo >= 40) {
+      score += 1000 * multiplier[judgement] * multiplier.combo40;
+    } else {
+      score += 1000 * multiplier[judgement];
+    }
+  };
+  
+  var removeNoteFromTrack = function (parent, child) {
+    parent.removeChild(child);
+  };
+  
+  var updateNext = function (index) {
+    song.sheet[index].next++;
+  };
+  
+  window.onload = function () {
+    trackContainer = document.querySelector('.track-container');
+    keypress = document.querySelectorAll('.keypress');
+    comboText = document.querySelector('.hit__combo');
+    combo_word = document.querySelector('#combo_word');
+    initializeNotes();
+    setupSpeed();
+    // setupChallenge();
+    setupStartButton();
+    setupKeys();
+    setupNoteMiss();
+  }
+  
+    </script>
+  </body>
+</html>
